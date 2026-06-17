@@ -1,0 +1,60 @@
+Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+[INFO] HuggingFace 로그인 완료
+[INFO] LLM 로드 중: Qwen/Qwen2.5-1.5B-Instruct
+[INFO] GPU(CUDA) 사용 가능 여부: False
+[INFO] CPU 모드 → Qwen2.5-1.5B-Instruct 로드 (RAM 약 3~4GB 필요)
+`torch_dtype` is deprecated! Use `dtype` instead!
+[INFO] LLM 로드 완료
+Device set to use cpu
+[INFO] LangChain ChatHuggingFace 연결 완료
+[INFO] 로컬 임베딩 모델 발견, 다운로드 생략: c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\10_hugginfaceRAG\e5_small
+[INFO] 임베딩 모델 로드 완료
+[INFO] Wikipedia 문서 수집 중... (최초 1회)
+  [OK] '챗GPT' 수집 완료
+  [재시도 1/3] '인공지능' 오류: Expecting value: line 1 column 1 (char 0)
+  [재시도 2/3] '인공지능' 오류: Expecting value: line 1 column 1 (char 0)
+  [재시도 3/3] '인공지능' 오류: Expecting value: line 1 column 1 (char 0)
+  [SKIP] '인공지능' 최대 재시도 초과, 건너뜁니다.
+  [재시도 1/3] '트랜스포머_(기계_학습)' 오류: Expecting value: line 1 column 1 (char 0)
+  [재시도 2/3] '트랜스포머_(기계_학습)' 오류: Expecting value: line 1 column 1 (char 0)
+  [OK] '트랜스포머_(기계_학습)' 수집 완료
+  [OK] 'GPT-4' 수집 완료
+  [재시도 1/3] 'GPT-4o' 오류: Expecting value: line 1 column 1 (char 0)
+  [재시도 2/3] 'GPT-4o' 오류: Expecting value: line 1 column 1 (char 0)
+  [재시도 3/3] 'GPT-4o' 오류: Expecting value: line 1 column 1 (char 0)
+  [SKIP] 'GPT-4o' 최대 재시도 초과, 건너뜁니다.
+[INFO] 수집된 문서 수: 9
+[INFO] Wikipedia 문서 캐시 저장 완료: c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\10_hugginfaceRAG\wiki_docs_cache.json
+[INFO] 청킹 완료 → 총 105개 청크
+[INFO] ChromaDB 구축 중 (최초 1회, CPU 작업으로 시간이 걸릴 수 있습니다): c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\10_hugginfaceRAG\RAG_db
+[INFO] ChromaDB 구축 및 저장 완료
+[INFO] ChromaDB 로드 완료
+[INFO] RAG Chain 구성 완료
+
+============================================================
+RAG 질의응답 시작
+============================================================
+
+[질문] 인공지능은 어떤 분야인가요?
+[답변] 인공지능은 다양한 분야에서 활용되고 있습니다. 예를 들어, 기계 학습은 경험을 통해 자동으로 개선하는 컴퓨터 알고리즘의 연구입니다. 이 분야에서는 복잡한 패턴에 대한 학습을 통해 상황에 대한 예측과 의사 결정을 돕습니다. 기계 학습은 다양한 응용이 존재하며, 문자 인식은 이를 이용한 가장 잘 알려진 사례입니다.
+------------------------------------------------------------
+
+[질문] 트랜스포머가 뭐예요?
+[답변] 트랜스포머는 멀티 헤드 어텐션 메커니즘을 기반으로 한 딥 러닝 아키텍처입니다. 이 알고리즘은 텍스트를 토큰 단위로 변환하고 각 토큰은 워드 임베딩 테이블에서 벡터로 변환됩니다. 각 레이어에서는 병렬 멀티 헤드 어텐션 메커니즘을 통해 컨텍스트 창 범위 내에서 다른 토큰과 함께 컨텍스트화되며, 이를 통해 핵심 토큰에 대한 신호가 증폭되고 덜 중요한 토큰은 약화됩니다. 이는 순환 유닛이 없어서 훈련 시간이 적게 걸리는 장점이 있습니다.
+------------------------------------------------------------
+
+[질문] GPT5는 언제 나와요?
+[답변] GPT5는 2023년에 나왔습니다.
+------------------------------------------------------------
+
+[질문] 알리바바의 거대 언어 모델 이름은?
+[답변] 알리바바의 거대 언어 모델 이름은 "Paipai"입니다.
+------------------------------------------------------------
+
+[질문] 인공지능의 위험은 없나요?
+[답변] 답변할 수 없습니다.
+------------------------------------------------------------
+
+[질문] GPT-4o의 출시일은 언제인가요?
+[답변] GPT-4o의 출시일은 2024년 5월 13일입니다.
+------------------------------------------------------------

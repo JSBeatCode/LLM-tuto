@@ -1,0 +1,317 @@
+✅ OPENAI_API_KEY가 정상적으로 설정되어 있습니다.
+
+============================================================
+▶ [1] Few-Shot examples 정의
+============================================================
+총 2개의 예시가 정의되었습니다.
+
+[Example 1]
+  Question: Who lived longer, Muhammad Ali or Alan Turing?
+
+[Example 2]
+  Question: Are both the directors of Jaws and Casino Royale from the same country?
+
+============================================================
+▶ [2] example_prompt — 예시 단건 포맷 템플릿
+============================================================
+[example_prompt.format() 결과 — 예시 1개가 어떻게 표현되는지 확인]
+Question: Who lived longer, Muhammad Ali or Alan Turing?
+
+Are follow up questions needed here: Yes.
+Follow up: How old was Muhammad Ali when he died?
+Intermediate answer: Muhammad Ali was 74 years old when he died.
+Follow up: How old was Alan Turing when he died?
+Intermediate answer: Alan Turing was 41 years old when he died.
+So the final answer is: Muhammad Ali
+
+
+============================================================
+▶ [3] FewShotPromptTemplate 조립
+============================================================
+[완성된 전체 프롬프트 구조 확인]
+------------------------------------------------------------
+질문-답변 형식의 예시가 주어집니다. 같은 방식으로 답변하세요.
+
+Question: Who lived longer, Muhammad Ali or Alan Turing?
+
+Are follow up questions needed here: Yes.
+Follow up: How old was Muhammad Ali when he died?
+Intermediate answer: Muhammad Ali was 74 years old when he died.
+Follow up: How old was Alan Turing when he died?
+Intermediate answer: Alan Turing was 41 years old when he died.
+So the final answer is: Muhammad Ali
+
+
+Question: Are both the directors of Jaws and Casino Royale from the same country?
+
+Are follow up questions needed here: Yes.
+Follow up: Who is the director of Jaws?
+Intermediate Answer: The director of Jaws is Steven Spielberg.
+Follow up: Where is Steven Spielberg from?
+Intermediate Answer: The United States.
+Follow up: Who is the director of Casino Royale?
+Intermediate Answer: The director of Casino Royale is Martin Campbell.
+Follow up: Where is Martin Campbell from?
+Intermediate Answer: New Zealand.
+So the final answer is: No
+
+
+Question: What is the age of the director of a movie which got a best international film in Oscar in 2010?
+------------------------------------------------------------
+
+============================================================
+▶ [4] FewShotPromptTemplate 구조 한눈에 보기
+============================================================
+
+┌─────────────────────────────────────────────────────────────┐
+│  FewShotPromptTemplate 구조                                 │
+│                                                             │
+│  [prefix]                                                   │
+│   └─ "질문-답변 형식의 예시가 주어집니다. 같은 방식으로…"    │
+│       → LLM에게 전체 맥락과 규칙을 알려줌                   │
+│                                                             │
+│  [examples] × N개  (example_prompt 형식으로 삽입됨)         │
+│   ├─ Example 1: Muhammad Ali vs Alan Turing                 │
+│   └─ Example 2: Jaws vs Casino Royale 감독                  │
+│       → "이런 식으로 추론해!" 라는 패턴을 보여줌            │
+│                                                             │
+│  [suffix]                                                   │
+│   └─ "Question: {input}"                                    │
+│       → 실제로 풀어야 할 질문이 여기 들어감                  │
+└─────────────────────────────────────────────────────────────┘
+
+============================================================
+▶ [5] LLM 호출 — Step-by-step 추론 유도
+============================================================
+[질문]
+What is the age of the director of a movie which got a best international film in Oscar in 2010?
+
+[LLM 응답 — Few-Shot으로 유도된 Step-by-step 추론]
+Are follow up questions needed here: Yes.  
+Follow up: What is the title of the movie that won the Best International Feature Film Oscar in 2010?  
+Intermediate Answer: The title of the movie is "The Secret in Their Eyes."  
+Follow up: Who is the director of "The Secret in Their Eyes"?  
+Intermediate Answer: The director is Juan José Campanella.  
+Follow up: What is the birthdate of Juan José Campanella?  
+Intermediate Answer: Juan José Campanella was born on July 19, 1953.  
+Follow up: How old was Juan José Campanella in 2010?  
+Intermediate Answer: Juan José Campanella was 57 years old in 2010.  
+So the final answer is: 57
+
+============================================================
+▶ [6] 날짜 정보를 추가한 질문 — 현재 나이 계산
+============================================================
+[질문]
+This is 2024 Dec. What is the age of the director of a movie which got a best international film in Oscar in 2010?
+
+[LLM 응답]
+Are follow up questions needed here: Yes.  
+Follow up: What is the name of the movie that won the Best International Feature Film Oscar in 2010?  
+Intermediate Answer: The movie that won the Best International Feature Film Oscar in 2010 is "The Secret in Their Eyes."  
+Follow up: Who is the director of "The Secret in Their Eyes"?  
+Intermediate Answer: The director of "The Secret in Their Eyes" is Juan José Campanella.  
+Follow up: When was Juan José Campanella born?  
+Intermediate Answer: Juan José Campanella was born on July 19, 1953.  
+Follow up: How old is Juan José Campanella as of December 2024?  
+Intermediate Answer: As of December 2024, Juan José Campanella is 71 years old.  
+So the final answer is: 71
+
+============================================================
+▶ [7] 한국어 질문으로도 동일한 추론 패턴 적용
+============================================================
+[질문]
+스티븐 스필버그의 영화 중 가장 많은 상을 받은 영화의 주연 배우는?
+
+[LLM 응답]
+Are follow up questions needed here: Yes.  
+Follow up: 스티븐 스필버그의 영화 중 가장 많은 상을 받은 영화는 무엇인가요?  
+Intermediate Answer: 스티븐 스필버그의 영화 중 가장 많은 상을 받은 영화는 '쉰들러 리스트'입니다.  
+Follow up: '쉰들러 리스트'의 주연 배우는 누구인가요?  
+Intermediate Answer: '쉰들러 리스트'의 주연 배우는 리암 니슨입니다.  
+So the final answer is: 리암 니슨
+
+============================================================
+▶ [8] Zero-Shot vs Few-Shot 비교
+============================================================
+[공통 질문]
+Who lived longer, Cleopatra or Julius Caesar?
+
+[Zero-Shot 응답 — 예시 없이 바로 질문]
+Cleopatra lived longer than Julius Caesar. Cleopatra VII was born in 69 BC and died in 30 BC, making her 39 years old at the time of her death. Julius Caesar was born in 100 BC and was assassinated in 44 BC, which means he lived to be 55 years old. Therefore, Cleopatra lived for a shorter period than Julius Caesar.
+
+[Few-Shot 응답 — 예시 2개 제공 후 같은 질문]
+Are follow up questions needed here: Yes.  
+Follow up: How old was Cleopatra when she died?  
+Intermediate answer: Cleopatra was 39 years old when she died.  
+Follow up: How old was Julius Caesar when he died?  
+Intermediate answer: Julius Caesar was 55 years old when he died.  
+So the final answer is: Julius Caesar
+
+💡 핵심 인사이트:
+   - Zero-Shot : LLM이 자유롭게 답변 → 형식이 제각각
+   - Few-Shot  : 예시를 보고 패턴을 학습 → Follow up / Intermediate answer
+                 형식을 그대로 따라 Step-by-step으로 추론
+   → 복잡한 추론이 필요한 질문일수록 Few-Shot의 효과가 커집니다.
+
+
+====================================================================================================
+
+좋은 질문이다. 이거 헷갈리는 포인트 딱 짚었네 👍
+결론부터 바로 깔끔하게 정리해줄게.
+
+---
+
+# 🔥 한 줄 핵심
+
+👉 **ChatPromptTemplate = “형식(틀)”**
+👉 **FewShotPromptTemplate = “예시 넣는 기술”**
+
+---
+
+# 🧠 감으로 이해 (진짜 중요)
+
+## 🍔 비유
+
+### 1️⃣ ChatPromptTemplate
+
+> “이 대화는 이렇게 진행돼”
+
+```text
+system: 너는 친절한 상담사야
+user: 질문
+```
+
+👉 **대화 구조를 만드는 틀**
+
+---
+
+### 2️⃣ Few-shot Prompt
+
+> “이렇게 답하는 거야 (예시 보여줌)”
+
+```text
+예시1: 이렇게 답함
+예시2: 이렇게 답함
+
+이제 너 차례
+```
+
+👉 **답변 스타일을 학습시키는 방법**
+
+---
+
+# ⚔️ 핵심 차이 (진짜 중요🔥)
+
+| 구분    | ChatPromptTemplate | FewShotPromptTemplate |
+| ----- | ------------------ | --------------------- |
+| 역할    | 구조 정의              | 학습(패턴 전달)             |
+| 목적    | system/user 구분     | 예시 기반 학습              |
+| 핵심    | “누가 말하냐”           | “어떻게 답하냐”             |
+| 사용 위치 | 프롬프트 전체 틀          | 프롬프트 내부               |
+| 관계    | 기반 구조              | 그 위에 올라감              |
+
+---
+
+# 💥 중요한 포인트 (이거 놓치면 안됨)
+
+👉 둘은 경쟁 관계 ❌
+👉 같이 쓰는 관계 ✅
+
+---
+
+# 🔥 실제 구조 (실무 모습)
+
+이렇게 같이 쓴다 👇
+
+```python
+ChatPromptTemplate([
+  ("system", "너는 보험 심사 전문가야"),
+  ("user", """
+    예시1:
+    진단: 감기 → 지급 가능
+
+    예시2:
+    진단: 미용 → 지급 불가
+
+    ---
+    진단: {input}
+    → 판단?
+  """)
+])
+```
+
+👉 이 안에 있는 예시 부분 = Few-shot
+
+---
+
+# 🧠 더 깊게 이해 (레벨업)
+
+## ChatPromptTemplate이 하는 일
+
+👉 “환경 설정”
+
+* 역할 지정
+* 말투 설정
+* 규칙 정의
+
+---
+
+## Few-shot이 하는 일
+
+👉 “행동 학습”
+
+* 판단 기준 전달
+* 패턴 학습
+* 출력 형식 통일
+
+---
+
+# 🎯 언제 각각 쓰냐
+
+## ✔️ ChatPromptTemplate
+
+* 챗봇 만들 때
+* 역할 중요할 때
+
+---
+
+## ✔️ Few-shot
+
+* 판단 문제
+* 규칙 기반 작업
+* 정확도 중요할 때
+
+---
+
+# 💡 너 상황 기준 (핵심🔥)
+
+너는
+👉 보험 심사 + LLM
+
+이건 이렇게 가는 게 베스트다:
+
+```text
+ChatPromptTemplate
+  + Few-shot
+  + CoT (단계별 사고)
+```
+
+👉 이 조합이 **실무 최강 조합**
+
+---
+
+# 🚀 최종 한 방 정리
+
+👉 ChatPromptTemplate
+= “무대 세팅”
+
+👉 Few-shot
+= “연기 방법 가르치기”
+
+---
+
+원하면 다음 단계로
+👉 “이 세 개 (ChatPrompt + Few-shot + CoT) 어떻게 조합하면 성능 터지는지”
+👉 “실무용 템플릿 하나 만들어주기 (보험 심사용)”
+
+이거 진짜 핵심인데 이어서 갈까?

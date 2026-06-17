@@ -1,0 +1,52 @@
+USER_AGENT environment variable not set, consider setting it to identify your requests.
+[STEP 0] OPENAI_API_KEY 정상 로드 완료
+[STEP 0] NAVER API KEY 정상 로드 완료
+
+[STEP 1] 네이버 뉴스 링크 수집
+  [LLM] 49개 링크 수집 / 예시: https://n.news.naver.com/mnews/article/030/0003424136?sid=105
+  [생성 인공지능] 63개 링크 수집 / 예시: https://n.news.naver.com/mnews/article/009/0005675417?sid=102
+  [GPT] 85개 링크 수집 / 예시: https://n.news.naver.com/mnews/article/003/0013924649?sid=104
+  [가전제품] 75개 링크 수집 / 예시: https://n.news.naver.com/mnews/article/009/0005675018?sid=101
+  총 272개 수집 → 중복 제거 후 269개
+
+[STEP 2] WebBaseLoader로 본문 수집 (비동기)
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\08_langChainRAG\08_langChainRAG.py:112: LangChainDeprecationWarning: See API reference for updated usage: https://python.langchain.com/api_reference/community/document_loaders/langchain_community.document_loaders.web_base.WebBaseLoader.html
+  docs = loader.aload()  # 비동기 로딩
+Fetching pages: 100%|#####################################################################| 269/269 [00:03<00:00, 74.53it/s]
+  269개 문서 로드 완료
+
+[STEP 3] 전처리 (노이즈 제거)
+  269개 문서 전처리 완료
+
+[STEP 4] 문서 저장 완료 → docs.jsonl
+
+[STEP 5] 청킹 & ChromaDB 구축
+  청크 수: 981
+  ChromaDB 저장 완료 → ./chroma_Web
+
+[STEP 6] RAG 체인 구성
+
+[STEP 7] RAG 체인 테스트
+
+  질문: 도메인 특화 언어 모델이란 무엇입니까? 어떤 예시가 있나요?
+  답변: 정보가 부족하여 답변할 수 없습니다.
+  ------------------------------------------------------------
+
+  질문: 인공지능의 최근 발전 방식은? 관련 링크도 보여주세요
+  답변: 인공지능의 최근 발전 방식 중 하나는 '하네스 엔지니어링'이라는 개념의 도입입니다. 이는 AI가 사용자에게 지속적으로 질문을 던져 구체적인 의도를 파악하고 최적의 결과물을 도출하는 방식으로, 기존의 단순한 명령 수행에서 벗어나 AI와의 상호작용을 통해 업무를 고도화하는 방향으로 발전하고 있습니다. 또한, 다양한 AI 가속기를 통합하여 유연하게 활용할 수 있는 'MoAI 추론 프레임워크'와 같은 기술도 등장하여, 기업들이 특정 벤더에 종속되지 않고 효율적인 인프라 전략을 구축할 수 있도록 돕고 있습니다. 이러한 발전은 AI의 성능을 비약적으로 향상시키고 있으며, 업무 효율성을 높이는 데 기여하고 있습니다.
+
+관련 링크: [하네스 엔지니어링](https://n.news.naver.com/mnews/article/015/0005282534?sid=101), [MoAI 추론 프레임워크](https://n.news.naver.com/mnews/article/030/0003424136?sid=105)
+  ------------------------------------------------------------
+
+  질문: 알리바바의 언어 모델 이름은?
+  답변: 정보가 부족하여 답변할 수 없습니다.
+  ------------------------------------------------------------
+
+[STEP 7-2] RunnableParallel (context + answer 동시 반환)
+  question : 인공지능의 최근 발전 방식은? 관련 링크도 보여주세요
+  answer   : 인공지능의 최근 발전 방식 중 하나는 '하네스 엔지니어링'이라는 개념의 도입입니다. 이는 AI가 사용자에게 지속적으로 질문을 던져 구체적인 의도를 파악하고 최적의 결과물을 도출하는 방식으로, 기존의 단순한 요청-응답 방식에서 벗어나 AI와의 상호작용을 통해 업무를 고도화하는 데 중점을 두고 있습니다. 또한, 다양한 AI 가속기를 통합하여 유연한 인프라 전략을 구축하는 'MoAI 추론 프레임워크'와 같은 기술도 발전하고 있습니다. 이러한 변화들은 AI의 성능을 비약적으로 향상시키고 있으며, 기업들이 AI를 활용하는 방식에도 큰 영향을 미치고 있습니다.
+
+관련 링크:
+1. [하네스 엔지니어링 관련 기사](https://n.news.naver.com/mnews/article/015/0005282534?sid=101)
+2. [MoAI 추론 프레임워크 관련 기사](https://n.news.naver.com/mnews/article/030/0003424136?sid=105)
+  context  : 별도의 프롬프트(명령어)를 입력해야 했지만, GPT-5.5에는 사진만 첨부하면 다 읽어준다”며 “GPT-5.5의 광학문자인식(OCR) 기능이 비약적으로 좋아진 게 체감된다”고 했다.오퍼스 4.7은 여전히 가장 똑똑한 ‘뇌’를 갖고 있다. 대학원 수준 추론(94.2%)과 고난도 추론(46.9%)에서는 GPT-5.5를 앞섰다. 복잡한 기획이나 설계 업무에선 오...

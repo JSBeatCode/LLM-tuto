@@ -1,0 +1,151 @@
+==================================================
+[STEP 1] openai 패키지 버전 확인
+==================================================
+  openai 버전 : 2.30.0
+
+  환경변수 OPENAI_API_KEY 를 코드 내 상수로 설정했습니다.
+  OpenAI 클라이언트 생성 완료
+
+==================================================
+[STEP 3] API 키 유효성 검증
+==================================================
+  ✅ API 키가 정상적으로 설정되어 있습니다.
+
+==================================================
+[STEP 4] 사용 가능한 GPT 모델 목록
+==================================================
+  - chatgpt-image-latest
+  - gpt-3.5-turbo
+  - gpt-3.5-turbo-0125
+  - gpt-3.5-turbo-1106
+  - gpt-3.5-turbo-16k
+  - gpt-3.5-turbo-instruct
+  - gpt-3.5-turbo-instruct-0914
+  - gpt-4
+  - gpt-4-0613
+  - gpt-4-turbo
+  - gpt-4-turbo-2024-04-09
+  - gpt-4.1
+  - gpt-4.1-2025-04-14
+  - gpt-4.1-mini
+  - gpt-4.1-mini-2025-04-14
+  - gpt-4.1-nano
+  - gpt-4.1-nano-2025-04-14
+  - gpt-4o
+  - gpt-4o-2024-05-13
+  - gpt-4o-2024-08-06
+  - gpt-4o-2024-11-20
+  - gpt-4o-audio-preview
+  - gpt-4o-audio-preview-2024-12-17
+  - gpt-4o-audio-preview-2025-06-03
+  - gpt-4o-mini
+  - gpt-4o-mini-2024-07-18
+  - gpt-4o-mini-audio-preview
+  - gpt-4o-mini-audio-preview-2024-12-17
+  - gpt-4o-mini-realtime-preview
+  - gpt-4o-mini-realtime-preview-2024-12-17
+  - gpt-4o-mini-search-preview
+  - gpt-4o-mini-search-preview-2025-03-11
+  - gpt-4o-mini-transcribe
+  - gpt-4o-mini-transcribe-2025-03-20
+  - gpt-4o-mini-transcribe-2025-12-15
+  - gpt-4o-mini-tts
+  - gpt-4o-mini-tts-2025-03-20
+  - gpt-4o-mini-tts-2025-12-15
+  - gpt-4o-realtime-preview
+  - gpt-4o-realtime-preview-2024-12-17
+  - gpt-4o-realtime-preview-2025-06-03
+  - gpt-4o-search-preview
+  - gpt-4o-search-preview-2025-03-11
+  - gpt-4o-transcribe
+  - gpt-4o-transcribe-diarize
+  - gpt-5
+  - gpt-5-2025-08-07
+  - gpt-5-chat-latest
+  - gpt-5-codex
+  - gpt-5-mini
+  - gpt-5-mini-2025-08-07
+  - gpt-5-nano
+  - gpt-5-nano-2025-08-07
+  - gpt-5-pro
+  - gpt-5-pro-2025-10-06
+  - gpt-5-search-api
+  - gpt-5-search-api-2025-10-14
+  - gpt-5.1
+  - gpt-5.1-2025-11-13
+  - gpt-5.1-chat-latest
+  - gpt-5.1-codex
+  - gpt-5.1-codex-max
+  - gpt-5.1-codex-mini
+  - gpt-5.2
+  - gpt-5.2-2025-12-11
+  - gpt-5.2-chat-latest
+  - gpt-5.2-codex
+  - gpt-5.2-pro
+  - gpt-5.2-pro-2025-12-11
+  - gpt-5.3-chat-latest
+  - gpt-5.3-codex
+  - gpt-5.4
+  - gpt-5.4-2026-03-05
+  - gpt-5.4-mini
+  - gpt-5.4-mini-2026-03-17
+  - gpt-5.4-nano
+  - gpt-5.4-nano-2026-03-17
+  - gpt-5.4-pro
+  - gpt-5.4-pro-2026-03-05
+  - gpt-audio
+  - gpt-audio-1.5
+  - gpt-audio-2025-08-28
+  - gpt-audio-mini
+  - gpt-audio-mini-2025-10-06
+  - gpt-audio-mini-2025-12-15
+  - gpt-image-1
+  - gpt-image-1-mini
+  - gpt-image-1.5
+  - gpt-realtime
+  - gpt-realtime-1.5
+  - gpt-realtime-2025-08-28
+  - gpt-realtime-mini
+  - gpt-realtime-mini-2025-10-06
+  - gpt-realtime-mini-2025-12-15
+  - o1
+  - o1-2024-12-17
+  - o1-pro
+  - o1-pro-2025-03-19
+  - o3
+  - o3-2025-04-16
+  - o3-deep-research
+  - o3-deep-research-2025-06-26
+  - o3-mini
+  - o3-mini-2025-01-31
+  - o3-pro
+  - o3-pro-2025-06-10
+  - o4-mini
+  - o4-mini-2025-04-16
+  - o4-mini-deep-research
+  - o4-mini-deep-research-2025-06-26
+  - omni-moderation-2024-09-26
+  - omni-moderation-latest
+
+  총 112개의 GPT/추론 모델을 사용할 수 있습니다.
+
+==================================================
+[STEP 5] 첫 번째 API 호출
+==================================================
+  모델  : gpt-4o-mini
+  질문  : OpenAI API 를 배우면 어떤 점이 좋을까요?
+
+  [응답 객체 주요 필드]
+  - id                        : chatcmpl-DRJHyd9eonWCYYmOBpst7rBgPrJek
+  - model                     : gpt-4o-mini-2024-07-18
+  - finish_reason             : stop
+  - usage.prompt_tokens       : 53
+  - usage.completion_tokens   : 42
+  - usage.total_tokens        : 95
+
+  [AI 응답 메시지]
+  OpenAI API를 배우면 다양한 자연어 처리 및 생성 작업을 쉽게 수행할 수 있습니다. 이를 통해 비즈니스, 교육, 콘텐츠 생성 등 다양한 분야에서 효율성을 높일 수 있습니다.
+
+==================================================
+주제 1 실습 완료 ✅
+==================================================

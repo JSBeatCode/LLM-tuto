@@ -1,0 +1,280 @@
+ℹ️  openai SDK 버전: 2.30.0
+✅ OPENAI_API_KEY가 정상적으로 설정되어 있습니다.
+
+=======================================================
+  Topic 3. File Search & Vector Store (RAG)
+=======================================================
+
+[Step 1] Vector Store 생성 중...
+  ✅ Vector Store 생성 완료
+  ID  : vs_69e79575f0348191951fd2cf04be3dc8
+  이름: 햄릿
+
+[Step 2] PDF 파일 Vector Store에 업로드 중...
+  📂 파일 업로드 중: c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\Hamlet_KOR.pdf
+  ✅ 업로드 완료 | 상태: completed
+  파일 수: FileCounts(cancelled=0, completed=1, failed=0, in_progress=0, total=1)
+
+[Step 3] File Search 어시스턴트 생성 중...
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_03_fileVectoreStore.py:158: DeprecationWarning: deprecated
+  assistant = client.beta.assistants.create(
+  ✅ 어시스턴트 생성 완료
+  ID  : asst_bKcXtjihhTGhhV5SQe8FCBgd
+  툴  : ['file_search']
+
+[Step 4] 어시스턴트에 Vector Store 연결 중...
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_03_fileVectoreStore.py:183: DeprecationWarning: deprecated
+  updated_assistant = client.beta.assistants.update(
+  ✅ Vector Store 연결 완료
+  연결된 Vector Store ID: vs_69e79575f0348191951fd2cf04be3dc8
+
+[Step 5] 첫 번째 질문 — Thread 생성 및 Run 실행
+  질문: 햄릿, 당신은 어떻게 죽었나요?
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_03_fileVectoreStore.py:42: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  thread = client.beta.threads.create(
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_03_fileVectoreStore.py:50: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  run = client.beta.threads.runs.create(
+
+  Run 상태 확인 중...
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_03_fileVectoreStore.py:59: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  run_status = client.beta.threads.runs.retrieve(
+  🔄 현재 상태: queued
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: completed
+  ✅ Run 완료!
+
+
+[Step 6] 답변 및 출처 인용 확인
+-------------------------------------------------------
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_03_fileVectoreStore.py:68: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  messages = client.beta.threads.messages.list(thread_id=thread.id)
+user
+햄릿, 당신은 어떻게 죽었나요?
+---
+assistant
+아, 나의 죽음에 대해 묻는군요. 내 운명은 비극적이었습니다. 레아티즈와의 결투 중, 그가 독이 묻은 검으로 나를 찔렀고, 그로 인해 나는 치명적인 상처를 입었습니다. 그 순간, 나는 왕과 왕비가 독배를 마시는 것을 보았고, 그들의 죽음 또한 내 손에 달려 있음을 깨달았습니다. 결국, 나는 그 왕을 찌르고, 나의 마지막 순간에 호레이쇼에게 나의 이야기를 전해주기를 부탁하며 세상을 떠났습니다【4:3†source】. 
+
+이 모든 것이 복수와 배신으로 얽힌 비극의 연속이었지요. 나의 죽음은 단순한 개인의 비극이 아니라, 덴마크 왕국의 운명과도 연결되어 있었습니다.
+---
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_03_fileVectoreStore.py:254: DeprecationWarning: deprecated
+  client.beta.assistants.delete(roleplay_assistant.id)
+
+🗑️  어시스턴트 및 Vector Store 삭제 완료
+✅ Topic 3 실행 완료!
+
+----------------------------------------------------------------------------------------------------------------------------------
+좋은 포인트 짚었다 👍
+여기 헷갈리면 RAG 구조 이해가 꼬여버려.
+
+결론부터 말할게:
+
+👉 **이 코드에서 만든 Vector Store는 “네 PC 파일 시스템에 있는 게 아니라, OpenAI 서버(클라우드)에 저장된다.”**
+
+---
+
+# 1. 어디에 저장되냐 (정답)
+
+이 코드의 이 부분:
+
+```python
+vector_store = client.vector_stores.create(name=name)
+```
+
+👉 이 순간 생성되는 건:
+
+* 로컬 파일 ❌
+* 메모리 ❌
+* 경로 ❌
+
+👉 **OpenAI 클라우드에 생성된 저장소 (서버 리소스)**
+
+그리고 이 ID:
+
+```python
+vector_store.id
+```
+
+👉 이게 사실상 “경로 역할”을 하는 값이야.
+
+---
+
+# 2. 그럼 PDF는 어디에 저장되냐?
+
+이 부분:
+
+```python
+file_batch = client.vector_stores.file_batches.upload_and_poll(
+    vector_store_id=vector_store.id,
+    files=file_streams
+)
+```
+
+여기서 일어나는 일:
+
+### 로컬에서는
+
+* `Hamlet_KOR.pdf` 파일을 읽어서 (binary stream)
+
+### 서버에서는
+
+1. 파일 업로드됨
+2. 텍스트 추출됨
+3. 청크로 쪼개짐
+4. 임베딩 생성됨
+5. Vector Store에 저장됨
+
+👉 즉:
+
+👉 **“파일 자체 + 벡터 데이터”가 OpenAI 서버에 저장됨**
+
+---
+
+# 3. 경로 개념이 없는 이유
+
+로컬 파일 시스템이면 이런 게 있어야 하지:
+
+```text
+C:/data/vector_store/
+```
+
+근데 여기서는 없음.
+
+대신:
+
+```text
+vector_store.id = vs_abc123
+```
+
+👉 이 ID가 곧 “DB 키”야
+
+즉:
+
+* 파일 경로 ❌
+* DB row처럼 ID로 접근 ⭕
+
+---
+
+# 4. 메모리에 있는 거냐?
+
+👉 이것도 아님
+
+* RAM에만 있는 게 아니라
+* **영속 저장(persistent storage)** 됨
+
+즉:
+
+* 프로그램 꺼도 안 사라짐
+* 다시 ID로 접근 가능
+
+---
+
+# 5. 실제 구조를 그림으로 보면
+
+```text
+[네 PC]
+Hamlet_KOR.pdf
+   ↓ 업로드
+
+[OpenAI 서버]
+Vector Store (vs_123)
+
+  ├── 파일 원본
+  ├── 텍스트 추출
+  ├── 청크 분할
+  ├── 임베딩 벡터
+  └── 인덱스 (검색용)
+
+Assistant
+  └── vector_store_ids = [vs_123]
+```
+
+---
+
+# 6. 그래서 검색은 어떻게 되냐
+
+질문이 들어오면:
+
+```text
+"햄릿, 당신은 어떻게 죽었나요?"
+```
+
+서버에서:
+
+1. 질문을 벡터로 변환
+2. Vector Store에서 유사한 청크 검색
+3. 그 내용을 모델에 넣음
+4. 답변 생성
+
+👉 즉:
+
+👉 **네 PC 파일을 읽는 게 아니라, 서버에 있는 임베딩 DB를 검색하는 구조**
+
+---
+
+# 7. 왜 마지막에 delete 하냐
+
+이 코드 마지막:
+
+```python
+client.vector_stores.delete(hamlet_store.id)
+```
+
+이거 중요한데:
+
+👉 안 지우면 계속 남아있음
+
+즉:
+
+* 비용 발생 가능
+* 데이터 계속 유지됨
+
+그래서 샘플 코드에서는 삭제하는 거야.
+
+---
+
+# 8. 헷갈리기 쉬운 포인트 정리
+
+## ❌ 로컬 저장소 아님
+
+→ 파일 시스템 경로 없음
+
+## ❌ 메모리 객체 아님
+
+→ 프로그램 종료해도 유지됨
+
+## ⭕ 클라우드 DB임
+
+→ OpenAI 서버에 저장됨
+
+## ⭕ ID로 접근
+
+→ `vector_store.id`가 key
+
+---
+
+# 9. 한 줄 정리
+
+👉 **Vector Store는 로컬도, 메모리도 아니고, OpenAI 서버에 있는 벡터 DB이며, 경로 대신 ID로 접근한다.**
+
+---
+
+원하면 다음 단계로
+
+👉 “Vector Store 내부 구조 (chunk / embedding / index) 실제로 어떻게 생겼는지”
+👉 “검색 정확도 튜닝 방법 (chunk size, k값 등)”
+👉 “보험 심사 문서 RAG 구조 설계”
+
+이거까지 실무 수준으로 이어서 풀어줄게 😎

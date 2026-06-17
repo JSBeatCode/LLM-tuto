@@ -1,0 +1,113 @@
+✅ OPENAI_API_KEY가 정상적으로 설정되어 있습니다.
+
+=======================================================
+  Topic 5. Function Call — 외부 함수 연동
+=======================================================
+
+[Step 1] Function Call 어시스턴트 생성 중...
+  ✅ 어시스턴트 생성 완료 | ID: asst_eBmeM0WCEHMtDJ3zx1mJWkL9
+  등록된 함수: ['examine_server', 'get_current_time']
+
+[Step 2] Thread 생성 중...
+  ✅ Thread 생성 완료 | ID: thread_MVcXGm3In6HS8BYsl3IenOD6
+  💬 질문: 지금 데이터 서버가 잘 작동중인가요?
+
+[Step 3] Run 실행 — examine_server() 함수 호출
+-------------------------------------------------------
+  Run ID: run_IHzZMOUWE6tgfPB5FMzYuB5O | 초기 상태: queued
+  🔄 현재 상태: queued
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: requires_action
+  ⚡ requires_action — 함수 실행 후 결과를 제출합니다.
+  요청된 함수 수: 1개
+
+  🔧 함수 실행 요청: examine_server() | call_id: call_h15h0M5nKc5gAjjKS45cenoj
+  📤 실행 결과: -1, 네트워크 연결 불안정
+
+  📨 submit_tool_outputs 전송 중...
+  제출 완료 | Run 상태: queued
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: completed
+  ✅ Run 완료!
+
+  🤖 어시스턴트 답변:
+  서버 상태를 확인한 결과, 현재 데이터 서버는 정상적으로 작동하고 있지 않습니다. 이유는 '네트워크 연결 불안정'으로 나타났습니다. 이 문제를 해결하기 위해 네트워크 연결을 점검할 필요가 있습니다. 추가적인 도움이 필요하시면 말씀해 주세요!
+
+[Step 4] 두 번째 질문 — get_current_time() 함수 호출
+-------------------------------------------------------
+  💬 질문: 지금 몇 시야?
+
+  Run ID: run_qdfvdgLdxH5lO6AH1LXREkMD | 초기 상태: queued
+  🔄 현재 상태: queued
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: requires_action
+  ⚡ requires_action — 함수 실행 후 결과를 제출합니다.
+  요청된 함수 수: 1개
+
+  🔧 함수 실행 요청: get_current_time() | call_id: call_bzSZ8Pc8Cj8wiwzEGhOUmUyV
+  📤 실행 결과: 2026-04-24 15:34:50
+
+  📨 submit_tool_outputs 전송 중...
+  제출 완료 | Run 상태: queued
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: completed
+  ✅ Run 완료!
+
+  🤖 어시스턴트 답변:
+  현재 시각은 2026년 4월 24일 오후 3시 34분 50초입니다. 다른 궁금한 점이 있다면 언제든지 질문해 주세요!
+
+[Step 5] 세 번째 질문 — 함수 호출 없이 바로 답변 (auto 모드 검증)
+-------------------------------------------------------
+  💬 질문: 안녕? 반가워
+  ※ requires_action 없이 바로 completed가 되어야 정상
+
+  Run ID: run_FPHV6hID7BRQ9NRxS8ldXxXR | 초기 상태: queued
+  🔄 현재 상태: queued
+  🔄 현재 상태: completed
+  ✅ Run 완료!
+
+  🤖 어시스턴트 답변:
+  안녕하세요! 반가워요! 궁금한 점이나 도움이 필요하시면 언제든지 말씀해 주세요.😊
+
+[Step 6] 전체 누적 대화 흐름 출력
+=======================================================
+[🧑 user]
+지금 데이터 서버가 잘 작동중인가요?
+---
+[🤖 assistant]
+먼저 서버 상태를 확인해 보겠습니다. 잠시만 기다려 주세요. 
+
+함수를 실행하겠습니다. 
+
+```javascript
+examine_server();
+```
+---
+[🤖 assistant]
+서버 상태를 확인한 결과, 현재 데이터 서버는 정상적으로 작동하고 있지 않습니다. 이유는 '네트워크 연결 불안정'으로 나타났습니다. 이 문제를 해결하기 위해 네트워크 연결을 점검할 필요가 있습니다. 추가적인 도움이 필요하시면 말씀해 주세요!
+---
+[🧑 user]
+지금 몇 시야?
+---
+[🤖 assistant]
+현재 시간을 확인해 보겠습니다. 잠시만 기다려 주세요.
+
+함수를 실행하겠습니다.
+
+```javascript
+get_current_time();
+```
+---
+[🤖 assistant]
+현재 시각은 2026년 4월 24일 오후 3시 34분 50초입니다. 다른 궁금한 점이 있다면 언제든지 질문해 주세요!
+---
+[🧑 user]
+안녕? 반가워
+---
+[🤖 assistant]
+안녕하세요! 반가워요! 궁금한 점이나 도움이 필요하시면 언제든지 말씀해 주세요.😊
+---
+
+🗑️  어시스턴트 삭제 완료
+✅ Topic 5 실행 완료!

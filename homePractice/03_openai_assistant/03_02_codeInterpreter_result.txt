@@ -1,0 +1,253 @@
+“Assistant API에 Code Interpreter 도구를 붙여서, 모델이 파이썬 코드를 실제로 써서 문제를 풀게 하고, 그때 생성한 중간 코드까지 확인하는 예제”야.
+----------------------------------------------------------------------------------------------------------------------------------------
+✅ OPENAI_API_KEY가 정상적으로 설정되어 있습니다.
+
+=======================================================
+  Topic 2. Code Interpreter — 코드 실행 도구 활용
+=======================================================
+
+[Step 1] 수학 선생님 어시스턴트 생성 중...
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_02_codeInterpreter.py:154: DeprecationWarning: deprecated
+  math_assistant = client.beta.assistants.create(
+  ✅ 어시스턴트 생성 완료
+  ID       : asst_2V3bwynXFJtwHFATPyGTVVlT
+  모델     : gpt-4o-mini
+  툴       : ['code_interpreter']
+
+[Step 2] Thread 생성 중...
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_02_codeInterpreter.py:35: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  thread = client.beta.threads.create(
+  ✅ Thread 생성 완료 | ID: thread_EddfkTlJ7EHQHaEJizVThOFf
+  질문: 413보다 큰 소수 중 네번째로 작은 소수의 세제곱수는 무엇입니까?
+
+[Step 3] Run 생성 및 실행 중...
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_02_codeInterpreter.py:43: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  run = client.beta.threads.runs.create(
+  ✅ Run 생성 완료 | ID: run_ktXPDUPisLld0pZKFpeXm4Dy
+  초기 상태: queued
+
+[Step 4] Run 상태 확인 중...
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_02_codeInterpreter.py:52: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  run_status = client.beta.threads.runs.retrieve(
+  🔄 현재 상태: queued
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: completed
+  ✅ Run 완료!
+
+
+[Step 5] RunStep — AI가 생성한 코드 확인
+-------------------------------------------------------
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_02_codeInterpreter.py:112: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  run_steps = client.beta.threads.runs.steps.list(
+[ RunStep 실행 내역 ]
+
+
+▶ Step 2 | 타입: tool_calls
+  AI가 생성한 코드:
+  ----------------------------------------
+  def is_prime(n):
+      """Check if a number is prime."""
+      if n <= 1:
+          return False
+      for i in range(2, int(n**0.5) + 1):
+          if n % i == 0:
+              return False
+      return True
+  
+  # Find primes greater than 413
+  primes = []
+  num = 414  # Start checking from 414
+  while len(primes) < 4:  # We need the first 4 primes greater than 413
+      if is_prime(num):
+          primes.append(num)
+      num += 1
+  
+  # Get the fourth prime and calculate its cube
+  fourth_prime = primes[3]
+  fourth_prime_cube = fourth_prime ** 3
+  
+  fourth_prime, fourth_prime_cube
+  ----------------------------------------
+
+
+
+[Step 6] 최종 대화 내용 출력
+-------------------------------------------------------
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_02_codeInterpreter.py:61: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  messages = client.beta.threads.messages.list(thread_id=thread.id)
+user
+413보다 큰 소수 중 네번째로 작은 소수의 세제곱수는 무엇입니까?
+---
+assistant
+먼저, 413보다 큰 소수를 찾아야 합니다. 소수를 찾는 방법은 여러 가지가 있지만, 일반적으로 에라토스테네스의 체(Sieve of Eratosthenes) 알고리즘이나 간단한 반복문을 사용하여 소수를 찾을 수 있습니다.
+
+1. 413보다 큰 소수를 찾습니다.
+2. 찾은 소수 중 네 번째로 작은 소수를 선택합니다.
+3. 선택한 소수의 세제곱을 계산합니다.
+
+이 과정을 파이썬 코드를 통해 구현해 보겠습니다.
+---
+assistant
+413보다 큰 네 번째로 작은 소수는 433입니다. 이 소수의 세제곱수는 81,182,737입니다. 
+
+따라서, 433의 세제곱수는 81,182,737입니다.
+---
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_02_codeInterpreter.py:197: DeprecationWarning: deprecated
+  client.beta.assistants.delete(math_assistant.id)
+
+🗑️  어시스턴트 삭제 완료
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+👉 RunStep 조회는 “AI가 어떻게 답을 만들었는지 투명하게 보고, 디버깅하고, 제어하기 위해” 쓰는 기능이야.
+
+1. RunStep을 왜 보냐 (핵심 목적 3가지)
+① 디버깅 (가장 중요)
+
+이게 80% 이유야.
+
+예를 들어 이런 상황:
+
+결과가 틀렸다
+이상한 답을 했다
+코드 실행 결과가 이상하다
+
+이때 그냥 답만 보면 원인을 몰라.
+
+👉 RunStep 보면 알 수 있음:
+
+AI가 어떤 코드를 생성했는지
+어떤 툴을 호출했는지
+어디서 잘못됐는지
+예시
+
+문제: “413보다 큰 소수…”
+
+결과가 틀렸다면?
+
+RunStep 보면 이런 걸 확인 가능:
+
+# AI가 만든 코드
+primes = [...]
+# 로직이 잘못됨
+
+👉 “아 얘가 소수 계산을 틀렸네” 바로 파악됨
+
+② AI가 도구를 어떻게 쓰는지 이해
+
+Assistant는 단순히 말만 하는 게 아니라:
+
+코드 실행 (code interpreter)
+함수 호출
+파일 처리
+
+같은 걸 할 수 있음.
+
+근데 중요한 건:
+
+👉 AI가 언제, 왜, 어떻게 도구를 쓰는지 사람이 이해해야 함
+
+RunStep은 그걸 보여줌.
+
+③ 신뢰성 확보 (Trust / Audit)
+
+이건 실무에서 꽤 중요해.
+
+특히 이런 경우:
+
+금융 계산
+보험 심사 (너 상황 딱 여기 👀)
+의료 판단
+리포트 생성
+
+👉 그냥 결과만 보면 위험함
+
+그래서:
+
+어떤 근거로 계산했는지
+어떤 로직으로 판단했는지
+
+를 확인해야 함.
+
+RunStep = 일종의 “AI 행동 로그”
+
+2. 언제 쓰냐 (실무 상황)
+
+이건 진짜 중요한 부분이야.
+
+상황 1. 결과가 이상할 때
+“왜 이 값이 나왔지?”
+
+👉 RunStep 확인
+
+계산 로직 오류
+데이터 처리 오류
+툴 사용 실패
+
+확인 가능
+
+상황 2. Code Interpreter 사용할 때
+
+이건 거의 필수야.
+
+왜냐면:
+
+👉 Code Interpreter = AI가 코드를 직접 생성하고 실행
+
+즉:
+
+코드가 맞는지
+비효율적인지
+위험한지
+
+확인해야 함
+
+상황 3. Function Calling (툴 호출) 디버깅
+
+예를 들어:
+
+DB 조회 함수
+API 호출 함수
+
+AI가 잘못된 파라미터로 호출할 수도 있음
+
+👉 RunStep 보면:
+
+{
+  "function": "get_user_data",
+  "args": {"user_id": null}
+}
+
+→ 바로 문제 파악됨
+
+상황 4. 에이전트 설계할 때
+
+AI가 여러 단계로 일하는 경우:
+
+데이터 가져오기
+계산
+결과 정리
+
+👉 RunStep 보면 이 흐름이 다 보임
+
+즉:
+
+AI의 사고 흐름을 구조적으로 확인 가능
+
+상황 5. 비용/성능 최적화
+
+이건 좀 고급인데 중요한 포인트야.
+
+예를 들어:
+
+쓸데없이 코드 실행을 많이 한다
+반복적으로 같은 작업을 한다
+
+👉 RunStep 보면 알 수 있음
+
+→ 최적화 가능

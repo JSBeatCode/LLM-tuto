@@ -1,0 +1,137 @@
+✅ OPENAI_API_KEY가 정상적으로 설정되어 있습니다.
+
+=======================================================
+  Topic 4. Multi-Turn 대화 구현
+=======================================================
+
+[사전 준비] 햄릿 롤플레잉 어시스턴트 세팅 중...
+  [준비] Vector Store 생성 중...
+  [준비] PDF 업로드 중: c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\Hamlet_KOR.pdf
+  [준비] 업로드 완료 | 상태: completed
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_04_multiTurn.py:184: DeprecationWarning: deprecated
+  assistant = client.beta.assistants.create(
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_04_multiTurn.py:195: DeprecationWarning: deprecated
+  assistant = client.beta.assistants.update(
+  [준비] 어시스턴트 생성 및 Vector Store 연결 완료 | ID: asst_0KLVrismDk3aZoytlsWHyLYT
+
+=======================================================
+  [Turn 1] 첫 번째 질문
+=======================================================
+
+  💬 질문: 햄릿, 당신은 어떻게 죽었나요?
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_04_multiTurn.py:38: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  thread = client.beta.threads.create(
+  Thread ID: thread_eNxCfxwcifisWov4ZcGQUMMr
+
+  Run 실행 중...
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_04_multiTurn.py:46: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  run = client.beta.threads.runs.create(
+  Run ID: run_k7umVDqcZncI3mWQ5tEEOFGT | 초기 상태: queued
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_04_multiTurn.py:55: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  run_status = client.beta.threads.runs.retrieve(
+  🔄 현재 상태: queued
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: completed
+  ✅ Run 완료!
+
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_04_multiTurn.py:147: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  messages = client.beta.threads.messages.list(thread_id=thread.id)
+
+  🤖 어시스턴트 답변:
+  아, 나의 죽음은 비극적이었지. 결국, 나는 레어티즈와의 결투에서 상처를 입고 말았어. 그 결투는 왕의 음모에 의해 조작된 것이었지. 왕은 독이 든 검을 준비해 두었고, 나와 레어티즈가 싸우는 동안, 왕비는 독이 든 술을 마시고 쓰러졌어. 그녀의 죽음은 나에게 큰 충격이었지. 결국, 나는 레어티즈의 검에 찔리고, 그가 나를 찌르기 전에 내가 그의 검을 빼앗아 그를 찔렀지. 그렇게 우리는 서로의 운명을 결정짓는 싸움을 벌였고, 나는 결국 죽음을 맞이하게 되었어【4:3†source】. 
+
+이 모든 일은 복수와 배신으로 가득 찬 덴마크의 비극적인 운명이었지. 나의 죽음은 단순한 개인의 비극이 아니라, 이 나라의 운명과도 연결되어 있었던 것이야.
+
+=======================================================
+  [Turn 2] 두 번째 질문 — 기존 Thread에 메시지 추가
+=======================================================
+
+  💬 질문: 후회하거나 되돌리고 싶은 것이 있나요?
+
+  기존 Thread에 메시지 추가 중...
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_04_multiTurn.py:109: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  thread_message = client.beta.threads.messages.create(
+  📨 메시지 추가됨 | ID: msg_051grEalUxeGwM6xGvRQMHSY
+  내용: 후회하거나 되돌리고 싶은 것이 있나요?
+
+  Run 재실행 중...
+  Run ID: run_g1kuh8VymOte06Alqa9l2tLK | 초기 상태: queued
+  🔄 현재 상태: queued
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: completed
+  ✅ Run 완료!
+
+
+  🤖 어시스턴트 답변:
+  후회라... 그 단어는 나에게 깊은 의미를 지니고 있지. 내 삶의 많은 순간들이 선택의 연속이었고, 그 선택들이 나를 이 지경에 이르게 했으니 말이야. 가장 큰 후회는 아마도 내 아버지의 죽음에 대한 무력함과, 그 복수를 위해 너무 많은 것을 잃었다는 점일 거야. 
+
+내가 사랑하는 오필리어를 잃고, 어머니와의 관계도 파괴되었지. 그 모든 것이 나의 선택에서 비롯된 것이라면, 나는 그 선택들을 되돌리고 싶어. 하지만, 인생은 그런 기회를 주지 않지. 모든 것이 지나가고 나면, 그 선택들이 나를 형성하는 요소가 되니까. 후회는 나를 괴롭히지만, 동시에 나를 더욱 강하게 만들기도 해. 결국, 나는 내 운명을 받아들이고, 그 속에서 의미를 찾으려 애쓰고 있어【4:5†source】.
+
+=======================================================
+  [Turn 3] 세 번째 질문 — 맥락 연속성 확인
+=======================================================
+
+  💬 질문: 오필리아에 대한 감정은 어땠나요?
+
+  기존 Thread에 메시지 추가 중...
+  📨 메시지 추가됨 | ID: msg_lFUTCGwtynMj4Y00yJjJx7JK
+  내용: 오필리아에 대한 감정은 어땠나요?
+
+  Run 재실행 중...
+  Run ID: run_4chHOSMdm3ykVUPY7zUA3X9N | 초기 상태: queued
+  🔄 현재 상태: queued
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: in_progress
+  🔄 현재 상태: completed
+  ✅ Run 완료!
+
+
+  🤖 어시스턴트 답변:
+  오필리아... 그녀는 나의 마음속 깊은 곳에 자리 잡고 있는 존재였지. 그녀와의 사랑은 순수하고 아름다웠지만, 동시에 비극적이기도 했어. 그녀는 나에게 위안과 희망을 주었고, 나의 고통을 이해해주는 유일한 사람이었지. 그러나, 내 아버지의 죽음과 그로 인한 복수의 길로 나아가면서, 나는 그녀를 잃게 되었어.
+
+내가 그녀에게 다가갈 수 없었던 것은, 내 마음의 혼란과 복수의 열망 때문이었지. 그녀는 나의 고통을 함께 나누고 싶어 했지만, 나는 그 사랑을 지키지 못했어. 결국, 그녀는 나의 고통을 견디지 못하고 미쳐버렸지. 그녀의 비극적인 죽음은 나에게 큰 상처로 남았고, 그로 인해 나는 더욱 깊은 슬픔에 빠지게 되었어. 오필리아는 나의 사랑이자, 나의 상실이었지【4:7†source】.
+
+=======================================================
+  [전체 대화 흐름] 누적된 Thread 메시지 전체 출력
+=======================================================
+
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_04_multiTurn.py:67: DeprecationWarning: The Assistants API is deprecated in favor of the Responses API
+  messages = client.beta.threads.messages.list(thread_id=thread.id)
+user
+햄릿, 당신은 어떻게 죽었나요?
+---
+assistant
+아, 나의 죽음은 비극적이었지. 결국, 나는 레어티즈와의 결투에서 상처를 입고 말았어. 그 결투는 왕의 음모에 의해 조작된 것이었지. 왕은 독이 든 검을 준비해 두었고, 나와 레어티즈가 싸우는 동안, 왕비는 독이 든 술을 마시고 쓰러졌어. 그녀의 죽음은 나에게 큰 충격이었지. 결국, 나는 레어티즈의 검에 찔리고, 그가 나를 찌르기 전에 내가 그의 검을 빼앗아 그를 찔렀지. 그렇게 우리는 서로의 운명을 결정짓는 싸움을 벌였고, 나는 결국 죽음을 맞이하게 되었어【4:3†source】. 
+
+이 모든 일은 복수와 배신으로 가득 찬 덴마크의 비극적인 운명이었지. 나의 죽음은 단순한 개인의 비극이 아니라, 이 나라의 운명과도 연결되어 있었던 것이야.
+---
+user
+후회하거나 되돌리고 싶은 것이 있나요?
+---
+assistant
+후회라... 그 단어는 나에게 깊은 의미를 지니고 있지. 내 삶의 많은 순간들이 선택의 연속이었고, 그 선택들이 나를 이 지경에 이르게 했으니 말이야. 가장 큰 후회는 아마도 내 아버지의 죽음에 대한 무력함과, 그 복수를 위해 너무 많은 것을 잃었다는 점일 거야. 
+
+내가 사랑하는 오필리어를 잃고, 어머니와의 관계도 파괴되었지. 그 모든 것이 나의 선택에서 비롯된 것이라면, 나는 그 선택들을 되돌리고 싶어. 하지만, 인생은 그런 기회를 주지 않지. 모든 것이 지나가고 나면, 그 선택들이 나를 형성하는 요소가 되니까. 후회는 나를 괴롭히지만, 동시에 나를 더욱 강하게 만들기도 해. 결국, 나는 내 운명을 받아들이고, 그 속에서 의미를 찾으려 애쓰고 있어【4:5†source】.
+---
+user
+오필리아에 대한 감정은 어땠나요?
+---
+assistant
+오필리아... 그녀는 나의 마음속 깊은 곳에 자리 잡고 있는 존재였지. 그녀와의 사랑은 순수하고 아름다웠지만, 동시에 비극적이기도 했어. 그녀는 나에게 위안과 희망을 주었고, 나의 고통을 이해해주는 유일한 사람이었지. 그러나, 내 아버지의 죽음과 그로 인한 복수의 길로 나아가면서, 나는 그녀를 잃게 되었어.
+
+내가 그녀에게 다가갈 수 없었던 것은, 내 마음의 혼란과 복수의 열망 때문이었지. 그녀는 나의 고통을 함께 나누고 싶어 했지만, 나는 그 사랑을 지키지 못했어. 결국, 그녀는 나의 고통을 견디지 못하고 미쳐버렸지. 그녀의 비극적인 죽음은 나에게 큰 상처로 남았고, 그로 인해 나는 더욱 깊은 슬픔에 빠지게 되었어. 오필리아는 나의 사랑이자, 나의 상실이었지【4:7†source】.
+---
+c:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\03_openai_assistant\03_04_multiTurn.py:297: DeprecationWarning: deprecated
+  client.beta.assistants.delete(roleplay_assistant.id)
+
+🗑️  어시스턴트 및 Vector Store 삭제 완료
+✅ Topic 4 실행 완료!
