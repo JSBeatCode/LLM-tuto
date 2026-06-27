@@ -511,8 +511,7 @@ def run_agent(llm_with_tools: ChatOpenAI, tool_map: dict,
         # 23919
         # 넣고 계산해주세요.
         # 이게 바로
-        # response.tool_calls
-        # 이 로직에서 어떤 툴을 쓸지 판단 혹은 그대로 툴 사용
+        # tool_calls
         response: AIMessage = llm_with_tools.invoke(messages)
         messages.append(response)
 
@@ -617,23 +616,6 @@ def run_agent_examples(llm: ChatOpenAI, tools: list) -> None:
     print("[Agent 실행 예시 - LCEL 방식]")
     print("=" * 60)
 
-    # "LLM에게 사용 가능한 Tool 목록과 설명서를 전달하는 것"
-    # bind_tools 이전:
-        # GPT에게
-        # 너는 계산기 없음
-        # 너는 인터넷 없음
-        # 이라고 말한 상태.
-    # bind_tools 이후:
-        # GPT에게
-        # 너 옆에 계산기 있음
-        # 이름: multiply
-        # 사용법:
-        # multiply(x, y)
-        # 너 옆에 백과사전 있음
-        # 이름: wikipedia
-        # 사용법:
-        # wikipedia(query)
-        # 라고 알려준 상태.
     llm_with_tools = llm.bind_tools(tools)
     tool_map = build_tool_map(tools)
 

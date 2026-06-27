@@ -25,10 +25,15 @@ from dotenv import load_dotenv
 from tqdm import tqdm
 
 # ── LangChain ──────────────────────────────────────────────────────────────────
-from langchain.schema import Document
-from langchain.schema.runnable import RunnablePassthrough
-from langchain.schema.output_parser import StrOutputParser
-from langchain.prompts import ChatPromptTemplate, PromptTemplate
+from langchain_core.documents import Document
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
+
+# from langchain.schema import Document
+# from langchain.schema.runnable import RunnablePassthrough
+# from langchain.schema.output_parser import StrOutputParser
+# from langchain.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_community.retrievers import BM25Retriever
 from langchain.retrievers import EnsembleRetriever
 from langchain.retrievers.multi_query import MultiQueryRetriever

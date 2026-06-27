@@ -1,0 +1,468 @@
+============================================================
+질문: 강아지와 고양이 중 누가 더 뇌세포가 많을까요?
+============================================================
+---검색---
+"Node 'retrieve':"
+'---'
+---쿼리 연관성 검색---
+---GRADE: 관련성 확인---
+---GRADE: 관련성 없음---
+---GRADE: 관련성 없음---
+---GRADE: 관련성 없음---
+---GRADE: 관련성 없음---
+---평가 결과를 확인합니다---
+---DECISION: GENERATE---
+"Node 'grade_documents':"
+'---'
+---생성---
+**************DOCUMENTS****************
+108
+---
+Ch.6 AgentExample: ReAct AgentReAct: Synergizing Reasoning and Acting in Language Models https://arxiv.org/abs/2210.03629Action을 수행하고, 결과를 반영하는 프롬프트 방식−생각-행동-관찰을 통해 다음 행동을 계획하고 실행
+109
+프롬프트: ‘강아지와 고양이 중 누가 더 평균적으로 똑똑한가요? 뇌세포의 수를 비교하세요.’생각: 두 동물의 뇌세포 수를 비교하는 것이 중요하다.행동: ‘개와 고양이의 뇌세포 비교’ 검색＇https://dogs-cats-brains-neurons-study-vanderbilt/관찰: (…) cats have 250 million cortical neurons, while dogs have about 530 million. (…)’생각: 250 million보다 530 million이 더 많은 뇌세포 수를 가진 것으로 보아 강아지가 고양이보다 더 똑똑한 것 같다.최종 답변: 강아지가 평균적으로 더 많은 뇌세포 수를 가지고 있으므로 고양이보다 똑똑합니다.
+---
+Ch.6 Agent실습) LangChain Tool과Agent
+110
+---
+Ch.6 AgentAgent에서Agentic Work로최근의Agent 담론은Agentic Work로 이동하는 중− Agent : Task를 수행하면 결과를 바로 도출− Agentic Work : 다양한Workflow를 설정하고, 이에 맞춘 복잡한 작업 가능•Ex) 아웃라인을 쓰고, 초고 작성 후LLM Evaluation을 통해 만족할 때까지 개선하기−멀티 에이전트와 같은 환경을 통해 다양한 고수준의 결과물 생성•Ex) Multi-Agent Debate (https://arxiv.org/abs/2305.19118v3) 111
+---
+Ch.6 Agent
+***************************************
+"Node 'generate':"
+'---'
+
+[최종 답변]
+강아지가 고양이보다 더 많은 뇌세포를 가지고 있습니다. 연구에 따르면, 고양이는 약 2억 5천만 개의 피질 뉴런을 가지고 있는 반면, 강아지는 약 5억 3천만 개의 피질 뉴런을 가지고 있습니다. 따라서 뇌세포 수를 비교했을 때, 강아지가 평균적으로 더 똑똑하다고 할 수 있습니다.
+
+============================================================
+질문: RAG의 HyDE 방법이 뭔가요?
+============================================================
+---검색---
+"Node 'retrieve':"
+'---'
+---쿼리 연관성 검색---
+---GRADE: 관련성 없음---
+---GRADE: 관련성 확인---
+---GRADE: 관련성 없음---
+---GRADE: 관련성 없음---
+---GRADE: 관련성 없음---
+---평가 결과를 확인합니다---
+---DECISION: GENERATE---
+"Node 'grade_documents':"
+'---'
+---생성---
+**************DOCUMENTS****************
+"상품을 환불하고 싶은데 어떤조건을 충족해야 하나요?"
+이 텍스트로 대답할 수 있는 질문은무엇입니까? 
+85
+---
+Ch.5 RAG기존Alignment Optimization 의 문제점청크의 내용만으로 검색이나 요약을 수행−효과적이지 않은 경우가 다수 존재LLM이 전체 맥락을 모르기 때문에, 한정적 보완 효과−문서의 전체 정보를 LLM에게 알려줄 수 있다면 어떨까?−Ex) 요약문을 함께 전달하기
+제2조 (용역의 범위)- 을은 갑이 지정하는 프로젝트에대해 다음과 같은 서비스를 제공한다.- LLM의 설계, - 개발 및 최적화- 특정 용도에 맞춘 모델커스터마이징 및 파인튜닝
+(갑과 을이 누구인지 모르므로효과가 매우 떨어짐)
+이 텍스트로 대답할 수 있는 질문은무엇입니까? 
+86
+---
+Ch.5 RAGClaude의Contextual Retrieval (성능의 큰 향상)전체Context를 고려하여 각각의 청크 재구성−전체Document와 각 청크를LLM에 입력맥락을 고려하여 청크의 앞부분 설명 추가− Ex) "The company's revenue grew by 3%“ − “This chunk is from an SEC filing on ACME Corp's performance in Q2 2023...“  추가이후 검색 성능 크게 향상재구성 비용은?− Claude의Prompt Caching을 활용87
+Source: https://www.anthropic.com/news/contextual-retrieval
+---
+Ch.5 RAGAdvanced RAG (Processing)HyDE(Hypothetical Document Embedding)−Context를 검색하기 전, LLM이 먼저 가상의 답변 생성−가상의 답변으로Retrieval 수행Step-back prompting을 사용할 수도 있음
+***************************************
+"Node 'generate':"
+'---'
+
+[최종 답변]
+RAG의 HyDE(Hypothetical Document Embedding) 방법은 LLM이 실제 문서를 검색하기 전에 가상의 답변을 먼저 생성하는 방식입니다. 이 가상의 답변을 기반으로 관련 정보를 검색하여 보다 효과적인 결과를 도출할 수 있습니다. 이를 통해 검색 과정에서의 효율성을 높이고, 더 나은 응답을 생성할 수 있는 가능성을 제공합니다.
+
+============================================================
+질문: who is Sam Altman?
+============================================================
+---검색---
+"Node 'retrieve':"
+'---'
+---쿼리 연관성 검색---
+---GRADE: 관련성 없음---
+---GRADE: 관련성 없음---
+---GRADE: 관련성 없음---
+---GRADE: 관련성 없음---
+---GRADE: 관련성 없음---
+---평가 결과를 확인합니다---
+---DECISION: 지금 Context로 답변 불가---
+"Node 'grade_documents':"
+'---'
+---쿼리 재조합---
+BEFORE: who is Sam Altman?
+AFTER:  Sam Altman은 누구인가요?
+"Node 'transform_query':"
+'---'
+---WEB SEARCH---
+---Query Generation---
+Before: Sam Altman은 누구인가요?
+After: Query: "Who is Sam Altman?"
+
+page_content='## Who Is Sam Altman?
+
+Sam Altman, the CEO of OpenAI, is one of the leading proponents of artificial intelligence in the world. Raised in St. Louis, Altman dropped out of college before founding social mapping company Loopt and launching a career as a venture capitalist. He co-founded OpenAI, the creator of ChatGPT, in 2015 with Elon Musk and others and became CEO in 2019. He remains in this role despite the company’s decision to briefly remove him in 2023. In addition to his work in AI, Altman is a successful investor and one of the richest people in the world thanks to stakes in companies such as Reddit and Stripe.
+
+## Quick Facts
+
+FULL NAME: Samuel Harris Altman
+
+BORN: April 22, 1985
+
+BIRTHPLACE: Chicago, Illinois
+
+SPOUSE: Oliver Mulherin (2024–present)
+
+CHILD: 1 son [...] Related    Lucy Letby on Netflix: Where Is She Now?
+   Lindsey Vonn in the Olympics
+   Where Is Elizabeth Smart’s Kidnapper Today?
+   Legendary Black Inventors
+   The ’House of Horrors’ Couple
+   The OpenAI Showdown That Nearly Cost Sam Altman His Job
+   What to Know About Elon Musk’s Children
+   Sam Bankman-Fried
+   Who Is Music Mogul Scooter Braun?
+   Notch
+
+1.   Famous Business Leaders
+2.   Entrepreneurs
+3.   Sam Altman
+
+# Sam Altman
+
+Sam Altman is the co-founder and CEO of OpenAI and one of the world’s leading advocates for artificial intelligence.
+
+By Tyler PiccottiPublished: Aug 20, 2025 3:31 PM EDT
+
+Share ArticleImage 8: Open share options
+
+Image 9: bookmarks
+
+Image 10: bookmarksListen (13 min)13 minAudio 1 [...] Image 10: bookmarksListen (13 min)13 minAudio 1
+
+Image 11: a man smiles slightly at the camera, he wears a suit coat, white collared, and polka dot tie
+
+Getty Images
+
+We may earn commission from links on this page, but we only recommend products we back.
+
+> 1985–present
+
+## Jump to:
+
+   Who Is Sam Altman?
+   Quick Facts
+   Early Life and Family
+   Education
+   Investor
+   OpenAI Co-Founder
+   Net Worth
+   Husband Oliver Mulherin and Personal Life
+   Quotes
+
+## Who Is Sam Altman?
+--------
+44.   ^Acres, Tom (November 22, 2023). "Who is Sam Altman? The OpenAI boss and ChatGPT guru who became one of AI's biggest players". Sky News.
+45.   ^"A New Team At Reddit". Sam Altman. November 13, 2014. Archived from the original on February 13, 2015. Retrieved February 13, 2015.
+46.   ^Robertson, Adi (July 10, 2015). "Interim Reddit CEO Ellen Pao replaced by company co-founder Steve Huffman". _The Verge_. Retrieved May 1, 2025.
+47.   ^ _a__b_Robison, Kyle (February 22, 2024). "Sam Altman is set to be one of the biggest winners in Reddit's IPO, with a stake that could be worth $435 million". _Fortune_.`{{cite web}}`: CS1 maint: url-status (link) [...] 5.   ^Hao, Karen (2025). _Empire of AI: dreams and nightmares in Sam Altman's OpenAI_. New York: Penguin Press. ISBN "ISBN (identifier)")978-0-593-65750-8.
+6.   ^Hagey 2025, pp.22–23, 30–31, 33, 36.
+7.   ^Chapman, Glenn; Bachner, Michael; Magid, Jacob; Ben-David, Ricky; Schneider, Tal; Magid, Jacob; Bachner, Michael; Sharon, Jeremy (May 17, 2023). "Sam Altman: The quick, deep thinker leading OpenAI". _The Times of Israel_. Archived from the original on June 1, 2023. Retrieved November 24, 2023.
+8.   ^ _a__b__c_Weil, Elizabeth (September 25, 2023). "Sam Altman Is the Oppenheimer of Our Age". _Intelligencer_. Retrieved December 12, 2023.
+9.   ^Hagey 2025, p.23.
+10.   ^Hagey 2025, pp.38–39. [...] 20.   ^Chafkin, Max (April 16, 2015). "Y Combinator President Sam Altman is Dreaming Big". _Fast Company_. Archived from the original on July 22, 2015. Retrieved July 22, 2015.
+21.   ^Altman, Sam (September 13, 2016). "YC Changes". _Y Combinator_. Archived from the original on November 7, 2016. Retrieved November 7, 2016.
+22.   ^Bloomberg, Sara (April 15, 2024). "Sam Altman is not on YC's board. So why claim to be its chair?". _Biz Journals_. Retrieved June 13, 2025.
+23.   ^Loizos, Connie (March 9, 2019). "Did Sam Altman make YC better or worse?". _TechCrunch_. Retrieved February 3, 2020.`{{cite web}}`: CS1 maint: url-status (link)
+24.   ^"Updates from YC". Archived from the original on March 16, 2019.
+--------
+Sam Altman is CEO of OpenAI, which partnered with Microsoft. Microsoft invested in OpenAI, provided cloud computing through its Azure platform, and integrated OpenAI’s technology into its products. Show More
+
+Sam Altman is an American entrepreneur who was president of the start-up accelerator Y Combinator from 2014 to 2019 and chief executive officer of the artificial intelligence company OpenAI since 2019. He has been compared to tech visionaries, including Steve Jobs and Bill Gates, and is known for his belief that artificial general intelligence (AGI) could match or surpass human capabilities.
+
+## Early life [...] ...(Show more)
+
+Top Questions
+
+### What roles did Sam Altman hold in his career?
+
+ Sam Altman was president of the start-up accelerator Y Combinator from 2014 to 2019 and became CEO of OpenAI in 2019. 
+### What led to the split between Sam Altman and Elon Musk at OpenAI?
+
+ Sam Altman and Elon Musk were cochairs of OpenAI when it was founded in 2015. In 2018, Musk proposed taking control of the organization to compete more directly with other artificial intelligence companies, including Google, but Altman declined. Musk then left OpenAI, and the split reflected broader differences over how AI should be developed, governed, and commercialized. 
+### How is Sam Altman connected to Microsoft? [...] Updated:June 05, 2026
+
+Table of Contents
+
+  
+
+   Introduction & Quick Facts 
+   Early life 
+   Loopt and Y Combinator 
+   OpenAI and artificial intelligence 
+       Founding of OpenAI 
+
+       ChatGPT and AI expansion 
+
+       OpenAI governance crisis 
+
+       Musk lawsuit against OpenAI 
+
+Read More
+
+Image 5: Sam Altman, 2023 OpenAIImage 6: Elon Musk Elon MuskImage 7: Howard Hughes Howard Hughes
+
+Table Of Contents
+
+Image 8: Sam Altman, 2023
+
+Open full sized image
+
+Sam Altman is CEO of OpenAI, the artificial intelligence company that developed ChatGPT.
+
+© Justin Sullivan/Getty Images
+
+in full:Samuel Harris Altman
+
+Founder:OpenAI
+
+News
+
+ • 
+
+Donald Trump, Bernie Sanders and Sam Altman are all talking about public ownership in AI • June 6, 2026, 12:02 AM ET(AP)
+
+...(Show more)
+--------
+For you
+       For professionals
+       For students
+
+   About us
+   For you
+   Latest articles
+   Unlock Full Access
+   My Account
+
+Home » Toolsheroes » Sam Altman biography, quotes and net worth
+
+# Sam Altman biography, quotes and net worth
+
+Image 7: Sam Altman - Toolshero
+
+Article by: Lars Weijers
+
+Last update: April 26, 2026
+
+Sam Altman is an American entrepreneur, investor and technology executive. He is best known as CEO of OpenAI, the company behind ChatGPT. Before that, he founded Loopt and later became president of Y Combinator, where he worked with many fast-growing startups. [...] ## Who is Sam Altman? His biography
+
+In this biography, you’ll learn how Sam Altman evolved from a startup founder into one of the most influential leaders in the world of artificial intelligence. From his early years and first ventures to his leadership at OpenAI, his mindset, his achievements, and his vision for the future.
+
+### Early Years and Background
+
+Sam Altman was born on April 22, 1985, in Chicago (United States), but grew up in St. Louis, Missouri. From a young age, he showed a fascination with computers and technology. At the age of eight, he received his first Macintosh computer, and from that moment on, his curiosity was unstoppable. While his peers were engaged in typical activities for their age, Sam taught himself to program and experimented with software. [...] His name is now closely linked to artificial intelligence. Altman often speaks about innovation, the future of AI and the responsibility that comes with powerful technology. That has made him one of the most visible figures in the current AI debate.
+
+In this article, you’ll read how Sam Altman developed from a young founder into one of the best-known names in artificial intelligence. You’ll learn how his career started, what he did at Y Combinator and why his role at OpenAI attracts so much attention worldwide.
+
+## Who is Sam Altman? His biography
+--------
+|  |
+
+|  |
+
+Sorry, there was a problem loading this page. Try again.
+
+See all formats and editions
+
+Step into the world of Sam Altman, the brilliant mind at the forefront of the artificial intelligence revolution. From humble beginnings to leading one of the most transformative companies in tech history, this biography dives deep into the life, mindset, and mission of the man behind OpenAI.
+
+Discover how Altman's passion for innovation, fearless entrepreneurship, and unwavering belief in AI's potential has propelled him into the global spotlight. Explore his journey from startup wunderkind and Y Combinator president to the CEO shaping humanity’s digital destiny with ChatGPT and other groundbreaking AI tools.'
+"Node 'web_search_node':"
+'---'
+---생성---
+**************DOCUMENTS****************
+## Who Is Sam Altman?
+
+Sam Altman, the CEO of OpenAI, is one of the leading proponents of artificial intelligence in the world. Raised in St. Louis, Altman dropped out of college before founding social mapping company Loopt and launching a career as a venture capitalist. He co-founded OpenAI, the creator of ChatGPT, in 2015 with Elon Musk and others and became CEO in 2019. He remains in this role despite the company’s decision to briefly remove him in 2023. In addition to his work in AI, Altman is a successful investor and one of the richest people in the world thanks to stakes in companies such as Reddit and Stripe.
+
+## Quick Facts
+
+FULL NAME: Samuel Harris Altman
+
+BORN: April 22, 1985
+
+BIRTHPLACE: Chicago, Illinois
+
+SPOUSE: Oliver Mulherin (2024–present)
+
+CHILD: 1 son [...] Related    Lucy Letby on Netflix: Where Is She Now?
+   Lindsey Vonn in the Olympics
+   Where Is Elizabeth Smart’s Kidnapper Today?
+   Legendary Black Inventors
+   The ’House of Horrors’ Couple
+   The OpenAI Showdown That Nearly Cost Sam Altman His Job
+   What to Know About Elon Musk’s Children
+   Sam Bankman-Fried
+   Who Is Music Mogul Scooter Braun?
+   Notch
+
+1.   Famous Business Leaders
+2.   Entrepreneurs
+3.   Sam Altman
+
+# Sam Altman
+
+Sam Altman is the co-founder and CEO of OpenAI and one of the world’s leading advocates for artificial intelligence.
+
+By Tyler PiccottiPublished: Aug 20, 2025 3:31 PM EDT
+
+Share ArticleImage 8: Open share options
+
+Image 9: bookmarks
+
+Image 10: bookmarksListen (13 min)13 minAudio 1 [...] Image 10: bookmarksListen (13 min)13 minAudio 1
+
+Image 11: a man smiles slightly at the camera, he wears a suit coat, white collared, and polka dot tie
+
+Getty Images
+
+We may earn commission from links on this page, but we only recommend products we back.
+
+> 1985–present
+
+## Jump to:
+
+   Who Is Sam Altman?
+   Quick Facts
+   Early Life and Family
+   Education
+   Investor
+   OpenAI Co-Founder
+   Net Worth
+   Husband Oliver Mulherin and Personal Life
+   Quotes
+
+## Who Is Sam Altman?
+--------
+44.   ^Acres, Tom (November 22, 2023). "Who is Sam Altman? The OpenAI boss and ChatGPT guru who became one of AI's biggest players". Sky News.
+45.   ^"A New Team At Reddit". Sam Altman. November 13, 2014. Archived from the original on February 13, 2015. Retrieved February 13, 2015.
+46.   ^Robertson, Adi (July 10, 2015). "Interim Reddit CEO Ellen Pao replaced by company co-founder Steve Huffman". _The Verge_. Retrieved May 1, 2025.
+47.   ^ _a__b_Robison, Kyle (February 22, 2024). "Sam Altman is set to be one of the biggest winners in Reddit's IPO, with a stake that could be worth $435 million". _Fortune_.`{{cite web}}`: CS1 maint: url-status (link) [...] 5.   ^Hao, Karen (2025). _Empire of AI: dreams and nightmares in Sam Altman's OpenAI_. New York: Penguin Press. ISBN "ISBN (identifier)")978-0-593-65750-8.
+6.   ^Hagey 2025, pp.22–23, 30–31, 33, 36.
+7.   ^Chapman, Glenn; Bachner, Michael; Magid, Jacob; Ben-David, Ricky; Schneider, Tal; Magid, Jacob; Bachner, Michael; Sharon, Jeremy (May 17, 2023). "Sam Altman: The quick, deep thinker leading OpenAI". _The Times of Israel_. Archived from the original on June 1, 2023. Retrieved November 24, 2023.
+8.   ^ _a__b__c_Weil, Elizabeth (September 25, 2023). "Sam Altman Is the Oppenheimer of Our Age". _Intelligencer_. Retrieved December 12, 2023.
+9.   ^Hagey 2025, p.23.
+10.   ^Hagey 2025, pp.38–39. [...] 20.   ^Chafkin, Max (April 16, 2015). "Y Combinator President Sam Altman is Dreaming Big". _Fast Company_. Archived from the original on July 22, 2015. Retrieved July 22, 2015.
+21.   ^Altman, Sam (September 13, 2016). "YC Changes". _Y Combinator_. Archived from the original on November 7, 2016. Retrieved November 7, 2016.
+22.   ^Bloomberg, Sara (April 15, 2024). "Sam Altman is not on YC's board. So why claim to be its chair?". _Biz Journals_. Retrieved June 13, 2025.
+23.   ^Loizos, Connie (March 9, 2019). "Did Sam Altman make YC better or worse?". _TechCrunch_. Retrieved February 3, 2020.`{{cite web}}`: CS1 maint: url-status (link)
+24.   ^"Updates from YC". Archived from the original on March 16, 2019.
+--------
+Sam Altman is CEO of OpenAI, which partnered with Microsoft. Microsoft invested in OpenAI, provided cloud computing through its Azure platform, and integrated OpenAI’s technology into its products. Show More
+
+Sam Altman is an American entrepreneur who was president of the start-up accelerator Y Combinator from 2014 to 2019 and chief executive officer of the artificial intelligence company OpenAI since 2019. He has been compared to tech visionaries, including Steve Jobs and Bill Gates, and is known for his belief that artificial general intelligence (AGI) could match or surpass human capabilities.
+
+## Early life [...] ...(Show more)
+
+Top Questions
+
+### What roles did Sam Altman hold in his career?
+
+ Sam Altman was president of the start-up accelerator Y Combinator from 2014 to 2019 and became CEO of OpenAI in 2019. 
+### What led to the split between Sam Altman and Elon Musk at OpenAI?
+
+ Sam Altman and Elon Musk were cochairs of OpenAI when it was founded in 2015. In 2018, Musk proposed taking control of the organization to compete more directly with other artificial intelligence companies, including Google, but Altman declined. Musk then left OpenAI, and the split reflected broader differences over how AI should be developed, governed, and commercialized. 
+### How is Sam Altman connected to Microsoft? [...] Updated:June 05, 2026
+
+Table of Contents
+
+  
+
+   Introduction & Quick Facts 
+   Early life 
+   Loopt and Y Combinator 
+   OpenAI and artificial intelligence 
+       Founding of OpenAI 
+
+       ChatGPT and AI expansion 
+
+       OpenAI governance crisis 
+
+       Musk lawsuit against OpenAI 
+
+Read More
+
+Image 5: Sam Altman, 2023 OpenAIImage 6: Elon Musk Elon MuskImage 7: Howard Hughes Howard Hughes
+
+Table Of Contents
+
+Image 8: Sam Altman, 2023
+
+Open full sized image
+
+Sam Altman is CEO of OpenAI, the artificial intelligence company that developed ChatGPT.
+
+© Justin Sullivan/Getty Images
+
+in full:Samuel Harris Altman
+
+Founder:OpenAI
+
+News
+
+ • 
+
+Donald Trump, Bernie Sanders and Sam Altman are all talking about public ownership in AI • June 6, 2026, 12:02 AM ET(AP)
+
+...(Show more)
+--------
+For you
+       For professionals
+       For students
+
+   About us
+   For you
+   Latest articles
+   Unlock Full Access
+   My Account
+
+Home » Toolsheroes » Sam Altman biography, quotes and net worth
+
+# Sam Altman biography, quotes and net worth
+
+Image 7: Sam Altman - Toolshero
+
+Article by: Lars Weijers
+
+Last update: April 26, 2026
+
+Sam Altman is an American entrepreneur, investor and technology executive. He is best known as CEO of OpenAI, the company behind ChatGPT. Before that, he founded Loopt and later became president of Y Combinator, where he worked with many fast-growing startups. [...] ## Who is Sam Altman? His biography
+
+In this biography, you’ll learn how Sam Altman evolved from a startup founder into one of the most influential leaders in the world of artificial intelligence. From his early years and first ventures to his leadership at OpenAI, his mindset, his achievements, and his vision for the future.
+
+### Early Years and Background
+
+Sam Altman was born on April 22, 1985, in Chicago (United States), but grew up in St. Louis, Missouri. From a young age, he showed a fascination with computers and technology. At the age of eight, he received his first Macintosh computer, and from that moment on, his curiosity was unstoppable. While his peers were engaged in typical activities for their age, Sam taught himself to program and experimented with software. [...] His name is now closely linked to artificial intelligence. Altman often speaks about innovation, the future of AI and the responsibility that comes with powerful technology. That has made him one of the most visible figures in the current AI debate.
+
+In this article, you’ll read how Sam Altman developed from a young founder into one of the best-known names in artificial intelligence. You’ll learn how his career started, what he did at Y Combinator and why his role at OpenAI attracts so much attention worldwide.
+
+## Who is Sam Altman? His biography
+--------
+|  |
+
+|  |
+
+Sorry, there was a problem loading this page. Try again.
+
+See all formats and editions
+
+Step into the world of Sam Altman, the brilliant mind at the forefront of the artificial intelligence revolution. From humble beginnings to leading one of the most transformative companies in tech history, this biography dives deep into the life, mindset, and mission of the man behind OpenAI.
+
+Discover how Altman's passion for innovation, fearless entrepreneurship, and unwavering belief in AI's potential has propelled him into the global spotlight. Explore his journey from startup wunderkind and Y Combinator president to the CEO shaping humanity’s digital destiny with ChatGPT and other groundbreaking AI tools.
+***************************************
+"Node 'generate':"
+'---'
+
+[최종 답변]
+샘 알트만(Sam Altman)은 OpenAI의 CEO로, 인공지능 분야에서 세계적으로 저명한 인물입니다. 그는 1985년 4월 22일 시카고에서 태어나 미주리주 세인트루이스에서 성장했습니다. 알트만은 대학을 중퇴한 후 소셜 맵핑 회사인 Loopt를 창립하고, 이후 벤처 캐피탈리스트로 활동했습니다. 2015년에는 일론 머스크와 함께 OpenAI를 공동 설립하였고, 2019년부터 CEO로 재직하고 있습니다. 그는 또한 Reddit와 Stripe와 같은 기업에 대한 투자로 세계에서 가장 부유한 사람 중 한 명으로 알려져 있습니다.

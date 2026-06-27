@@ -7,3 +7,5 @@ chroma_db
 e5_small
 RAG_db
 .env
+*.pdf
+*.xlsx
