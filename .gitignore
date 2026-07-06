@@ -9,3 +9,6 @@ RAG_db
 .env
 *.pdf
 *.xlsx
+.venv-cuda
+hf_cache
+

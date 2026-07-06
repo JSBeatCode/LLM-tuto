@@ -6,20 +6,65 @@
 - 데이터   : Wikipedia (한국어)
 """
 
+# ── 표준 라이브러리 ──────────────────────────────────────────────────────────
+import json
 import os
+import random
+import time
+
+# ── 서드파티: 환경변수 ────────────────────────────────────────────────────────
+from dotenv import load_dotenv
+
+# ── 서드파티: HuggingFace ─────────────────────────────────────────────────────
 import torch
 
-from dotenv import load_dotenv
+# HuggingFace Hub에서 모델 파일 전체를 로컬 폴더로 다운로드하는 함수
+from huggingface_hub import login, snapshot_download
+
+# HuggingFace 모델을 불러오고 실행하기 위한 도구들
+from transformers import (
+    AutoModelForCausalLM,  # Qwen 같은 생성형 LLM 모델 본체를 불러오는 클래스
+    AutoTokenizer,         # 사람의 문장을 모델이 이해하는 숫자 토큰으로 바꾸는 도구
+    BitsAndBytesConfig,    # GPU 환경에서 4-bit 양자화 설정을 위한 클래스
+    pipeline,              # 모델 + 토크나이저 + 생성 설정을 묶어 쉽게 실행하게 해주는 도구
+)
+
+# ── 서드파티: LangChain ───────────────────────────────────────────────────────
+from langchain_chroma import Chroma
+from langchain_community.document_loaders import WikipediaLoader
+from langchain_core.documents import Document
+
+# LLM의 출력 결과를 문자열로 정리해주는 도구
+# 프롬프트 → LLM 답변 → 문자열로 변환
+from langchain_core.output_parsers import StrOutputParser
+
+# LLM에게 보낼 대화 양식을 미리 만들어두는 도구
+# system: AI에게 주는 기본 규칙 / user: 사용자의 질문 / assistant: AI 답변
+from langchain_core.prompts import ChatPromptTemplate
+
+# LangChain에서 여러 작업을 병렬처럼 묶어서 실행할 때 쓰는 도구
+# RunnableParallel: 하나의 입력 질문에서 context와 question을 동시에 만들어내기 위한 도구
+# RunnablePassthrough: 입력값을 그대로 통과시키는 도구
+from langchain_core.runnables import RunnableParallel, RunnablePassthrough
+
+# HuggingFace 모델을 LangChain에서 사용할 수 있게 연결해주는 도구들
+from langchain_huggingface import (
+    ChatHuggingFace,       # LLM을 채팅 모델 형태로 사용할 수 있게 해주는 래퍼
+    HuggingFaceEmbeddings, # HuggingFace 임베딩 모델을 LangChain에서 사용할 수 있게 해주는 클래스
+    HuggingFacePipeline,   # HuggingFace pipeline을 LangChain용 LLM으로 감싸는 어댑터
+)
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
 
 # ─────────────────────────────────────────
 # 0. 경로 설정 & 환경변수 로드
 # ─────────────────────────────────────────
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-EMB_MODEL_DIR = os.path.join(BASE_DIR, "e5_small")  # 임베딩 모델: .py 옆 폴더에 저장
-CHROMA_DIR    = os.path.join(BASE_DIR, "RAG_db")    # ChromaDB:     .py 옆 폴더에 저장
-# LLM 모델(Qwen)은 HuggingFace 기본 캐시에 자동 저장
-#   Windows : C:\Users\(사용자명)\.cache\huggingface\hub\
-#   Linux   : ~/.cache/huggingface/hub/
+BASE_DIR          = os.path.dirname(os.path.abspath(__file__))
+EMB_MODEL_DIR     = os.path.join(BASE_DIR, "e5_small")     # 임베딩 모델:      .py 옆 폴더에 저장
+CHROMA_DIR        = os.path.join(BASE_DIR, "RAG_db")       # ChromaDB:         .py 옆 폴더에 저장
+LLM_CPU_MODEL_DIR = os.path.join(BASE_DIR, "qwen2.5-1.5b") # LLM (CPU용 1.5B): .py 옆 폴더에 저장
+LLM_GPU_MODEL_DIR = os.path.join(BASE_DIR, "qwen2.5-7b")   # LLM (GPU용 7B):   .py 옆 폴더에 저장
+DOCS_CACHE        = os.path.join(BASE_DIR, "wiki_docs_cache.json")  # Wikipedia 문서 캐시
 
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 HF_TOKEN = os.getenv("HF_TOKEN")  # Llama 등 gated 모델 사용 시 필요
@@ -30,7 +75,6 @@ HF_TOKEN = os.getenv("HF_TOKEN")  # Llama 등 gated 모델 사용 시 필요
 # ─────────────────────────────────────────
 def login_huggingface():
     if HF_TOKEN:
-        from huggingface_hub import login
         login(token=HF_TOKEN)
         print("[INFO] HuggingFace 로그인 완료")
     else:
@@ -41,19 +85,6 @@ def login_huggingface():
 # 2. LLM 로드 (Qwen2.5-7B, 4-bit 양자화)
 # ─────────────────────────────────────────
 def load_llm():
-
-    # HuggingFace 모델을 불러오고 실행하기 위한 도구들
-    from transformers import (
-        AutoModelForCausalLM,  # Qwen 같은 생성형 LLM 모델 본체를 불러오는 클래스
-        AutoTokenizer,         # 사람의 문장을 모델이 이해하는 숫자 토큰으로 바꾸는 도구
-        pipeline,              # 모델 + 토크나이저 + 생성 설정을 묶어 쉽게 실행하게 해주는 도구
-    )
-
-    # HuggingFace 모델을 LangChain에서 사용할 수 있게 연결해주는 도구들
-    from langchain_huggingface import (
-        HuggingFacePipeline,   # HuggingFace pipeline을 LangChain용 LLM으로 감싸는 어댑터
-        ChatHuggingFace,       # LLM을 채팅 모델 형태로 사용할 수 있게 해주는 래퍼
-    )
     # ── 모델 선택 ──────────────────────────────────────────────────────────
     # GPU(CUDA) 있을 경우 : Qwen2.5-7B-Instruct (4-bit 양자화, 고품질)
     # GPU 없을 경우 (CPU) : Qwen2.5-1.5B-Instruct (경량, RAG 구조 학습용)
@@ -67,44 +98,52 @@ def load_llm():
 
     if use_cuda:
         # ── GPU 환경: 4-bit NF4 양자화 적용 (VRAM 절약) ──────────────────
-        # from_pretrained()가 HuggingFace 기본 캐시를 자동으로 사용
-        #   최초 실행 시 다운로드 / 이후 실행 시 캐시에서 바로 로드
-        from transformers import BitsAndBytesConfig
-        
+        # .py 옆 폴더에 없으면 최초 1회 다운로드, 이후엔 로컬에서 바로 로드
+        if not os.path.exists(LLM_GPU_MODEL_DIR):
+            print(f"[INFO] LLM 최초 다운로드 → {LLM_GPU_MODEL_DIR}")
+            snapshot_download(repo_id=model_id, local_dir=LLM_GPU_MODEL_DIR)
+        else:
+            print(f"[INFO] 로컬 LLM 발견, 다운로드 생략 → {LLM_GPU_MODEL_DIR}")
+
         # 양자화 코딩: 모델을 더 작은 용량으로 압축해서 GPU 메모리를 덜 쓰게 만드는 기술
         bnb_config = BitsAndBytesConfig(
-            load_in_4bit=True,              # 모델을 4-bit로 압축해서 로드 → GPU 메모리 절약
-            bnb_4bit_use_double_quant=True, # 압축 정보를 한 번 더 효율화 → 추가 메모리 절약
-            bnb_4bit_quant_type="nf4",      # LLM에 자주 쓰이는 4-bit 압축 방식
-            bnb_4bit_compute_dtype=torch.bfloat16, # 저장은 4-bit, 계산은 bfloat16으로 수행
+            load_in_4bit=True,               # 모델을 4-bit로 압축해서 로드 → GPU 메모리 절약
+            bnb_4bit_use_double_quant=True,  # 압축 정보를 한 번 더 효율화 → 추가 메모리 절약
+            bnb_4bit_quant_type="nf4",       # LLM에 자주 쓰이는 4-bit 압축 방식
+            bnb_4bit_compute_dtype=torch.bfloat16,  # 저장은 4-bit, 계산은 bfloat16으로 수행
         )
-        
+
         # 토크나이저: "인공지능이 뭐야?" -> [1234, 5678, 90, ...]
-        tokenizer = AutoTokenizer.from_pretrained(model_id)
+        tokenizer = AutoTokenizer.from_pretrained(LLM_GPU_MODEL_DIR)
 
         # Qwen LLM 모델 본체를 불러오는 코드
         model = AutoModelForCausalLM.from_pretrained(
-            model_id,                       # 불러올 HuggingFace 모델 이름
-            torch_dtype="auto",             # 모델에 맞는 데이터 타입을 자동 선택
-            quantization_config=bnb_config, # 위에서 만든 4-bit 양자화 설정 적용
-            device_map={"": 0},             # 모델 전체를 0번 GPU에 올림
+            LLM_GPU_MODEL_DIR,               # 로컬 폴더에서 로드 (.py 옆)
+            torch_dtype="auto",              # 모델에 맞는 데이터 타입을 자동 선택
+            quantization_config=bnb_config,  # 위에서 만든 4-bit 양자화 설정 적용
+            device_map={"": 0},              # 모델 전체를 0번 GPU에 올림
             # attn_implementation="flash_attention_2"  # 고성능 GPU에서 속도 개선용 옵션. T4 미지원, A100 이상에서 활성화
         )
     else:
         # ── CPU 환경: 1.5B 경량 모델, 양자화 없이 로드 ────────────────────
-        # from_pretrained()가 HuggingFace 기본 캐시를 자동으로 사용
-        #   최초 실행 시 다운로드 / 이후 실행 시 캐시에서 바로 로드
+        # .py 옆 폴더에 없으면 최초 1회 다운로드, 이후엔 로컬에서 바로 로드
         # RAM 요구량 약 3~4GB / 답변 품질은 7B보다 낮지만 RAG 구조 학습에 충분
+        if not os.path.exists(LLM_CPU_MODEL_DIR):
+            print(f"[INFO] LLM 최초 다운로드 → {LLM_CPU_MODEL_DIR}")
+            snapshot_download(repo_id=model_id, local_dir=LLM_CPU_MODEL_DIR)
+        else:
+            print(f"[INFO] 로컬 LLM 발견, 다운로드 생략 → {LLM_CPU_MODEL_DIR}")
+
         print("[INFO] CPU 모드 → Qwen2.5-1.5B-Instruct 로드 (RAM 약 3~4GB 필요)")
 
         # 토크나이저: "인공지능이 뭐야?" -> [1234, 5678, 90, ...]
-        tokenizer = AutoTokenizer.from_pretrained(model_id)
+        tokenizer = AutoTokenizer.from_pretrained(LLM_CPU_MODEL_DIR)
 
         # HuggingFace에서 지정한 LLM 모델을 다운로드/로드해서, CPU에서 실행하도록 설정하는 코드
         model = AutoModelForCausalLM.from_pretrained(
-            model_id,                 # 불러올 HuggingFace 모델 이름
+            LLM_CPU_MODEL_DIR,         # 로컬 폴더에서 로드 (.py 옆)
             torch_dtype=torch.float32, # CPU에서 안정적으로 계산하기 위한 숫자 형식
-            device_map="cpu",         # 모델을 GPU가 아닌 CPU에 올려서 실행
+            device_map="cpu",          # 모델을 GPU가 아닌 CPU에 올려서 실행
         )
 
     print("[INFO] LLM 로드 완료")
@@ -120,7 +159,7 @@ def load_llm():
         top_k=20,
     )
 
-    # 모델 + 토크나이저 + 생성 옵션을 하나로 묶어서 “텍스트 생성기”처럼 사용할 수 있게 만드는 것
+    # 모델 + 토크나이저 + 생성 옵션을 하나로 묶어서 "텍스트 생성기"처럼 사용할 수 있게 만드는 것
     pipe = pipeline(
         "text-generation",
         model=model,
@@ -153,12 +192,6 @@ def load_llm():
 # 문서와 질문을 숫자 벡터로 바꿀 준비를 하는 함수
 # embeddings: "트랜스포머는 인공지능 모델 구조입니다." -> [0.12, -0.44, 0.87, ...]
 def load_embeddings():
-    # HuggingFace 임베딩 모델을 LangChain에서 사용할 수 있게 해주는 클래스
-    from langchain_huggingface import HuggingFaceEmbeddings
-
-    # HuggingFace Hub에서 모델 파일 전체를 로컬 폴더로 다운로드하는 함수
-    from huggingface_hub import snapshot_download
-
     # 사용할 다국어 임베딩 모델 이름
     # 한국어 문서도 벡터로 변환할 수 있음
     model_name = "intfloat/multilingual-e5-small"
@@ -177,8 +210,8 @@ def load_embeddings():
 
     # 로컬에 저장된 임베딩 모델을 LangChain용 embeddings 객체로 로드
     embeddings = HuggingFaceEmbeddings(
-        model_name=EMB_MODEL_DIR,           # 로컬 임베딩 모델 폴더 경로
-        model_kwargs={"device": "cpu"},     # 임베딩 계산은 CPU에서 수행
+        model_name=EMB_MODEL_DIR,        # 로컬 임베딩 모델 폴더 경로
+        model_kwargs={"device": "cpu"},  # 임베딩 계산은 CPU에서 수행
     )
 
     print("[INFO] 임베딩 모델 로드 완료")
@@ -191,15 +224,6 @@ def load_embeddings():
 # 4. Wikipedia 데이터 수집 & 청킹
 # ─────────────────────────────────────────
 def load_and_split_documents():
-    import json
-    import time
-    import random
-    from langchain_community.document_loaders import WikipediaLoader
-    from langchain_text_splitters import RecursiveCharacterTextSplitter
-    from langchain_core.documents import Document
-
-    DOCS_CACHE = os.path.join(BASE_DIR, "wiki_docs_cache.json")
-
     # ── 로컬 캐시가 있으면 Wikipedia 재수집 없이 바로 로드 ────────────────
     if os.path.exists(DOCS_CACHE):
         print(f"[INFO] 로컬 캐시 발견 → Wikipedia 재수집 생략: {DOCS_CACHE}")
@@ -209,17 +233,14 @@ def load_and_split_documents():
         print(f"[INFO] 캐시에서 {len(docs)}개 문서 로드 완료")
     else:
         # ── 최초 실행 시 Wikipedia에서 수집 후 로컬에 저장 ──────────────────
-        topics = ["챗GPT", "인공지능", "트랜스포머_(기계_학습)", "GPT-4", "GPT-4o"]
-        docs = []
-        MAX_RETRY = 3  # 네트워크 오류 시 재시도 횟수
-
-        # DELAY_BETWEEN = 5   # 토픽 간 요청 간격 (초) - Wikipedia Rate Limit 대응
-        # DELAY_RETRY   = 10  # 실패 후 재시도 대기 (초)
-        DELAY_BETWEEN = (3, 12)   # 토픽 간 요청 간격: 3~12초 랜덤
-        DELAY_RETRY   = (3, 12)   # 실패 후 재시도 대기: 3~12초 랜덤
+        topics    = ["챗GPT", "인공지능", "트랜스포머_(기계_학습)", "GPT-4", "GPT-4o"]
+        docs      = []
+        MAX_RETRY     = 3        # 네트워크 오류 시 재시도 횟수
+        DELAY_BETWEEN = (3, 12)  # 토픽 간 요청 간격: 3~12초 랜덤 (Wikipedia Rate Limit 대응)
+        DELAY_RETRY   = (3, 12)  # 실패 후 재시도 대기: 3~12초 랜덤
 
         print("[INFO] Wikipedia 문서 수집 중... (최초 1회)")
-        
+
         # topics에 있는 검색어를 하나씩 Wikipedia에서 수집하고,
         # 오류가 나면 최대 MAX_RETRY번까지 재시도한 뒤,
         # 그래도 실패하면 해당 검색어는 건너뛰는 코드
@@ -237,17 +258,15 @@ def load_and_split_documents():
                     print(f"  [OK] '{query}' 수집 완료")
                     # 마지막 토픽이 아니면 다음 요청 전에 대기
                     if i < len(topics) - 1:
-                        delay_between_random = random.uniform(DELAY_BETWEEN)
+                        delay_between_random = random.uniform(*DELAY_BETWEEN)
                         print(f"  [대기] 다음 요청까지 {delay_between_random:.1f}초 대기 중...")
-                        # time.sleep(DELAY_BETWEEN)
                         time.sleep(delay_between_random)
                     break
                 except Exception as e:
                     print(f"  [재시도 {attempt}/{MAX_RETRY}] '{query}' 오류: {e}")
                     if attempt < MAX_RETRY:
-                        delay_retry_random = random.uniform(DELAY_RETRY)
-                        print(f"  [대기] {delay_retry_random:1f}초 후 재시도...")
-                        # time.sleep(DELAY_RETRY)
+                        delay_retry_random = random.uniform(*DELAY_RETRY)
+                        print(f"  [대기] {delay_retry_random:.1f}초 후 재시도...")
                         time.sleep(delay_retry_random)
                     else:
                         print(f"  [SKIP] '{query}' 최대 재시도 초과, 건너뜁니다.")
@@ -266,8 +285,8 @@ def load_and_split_documents():
     # 조각끼리 80자 정도 겹치게 만들어서 검색하기 좋은 형태로 바꾸는 코드
     # 긴 문서를 RAG 검색에 적합한 작은 조각(chunk)으로 나누는 도구 생성
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=800,    # 청크 하나의 최대 크기: 약 800자
-        chunk_overlap=80,  # 청크끼리 80자씩 겹치게 해서 문맥 끊김 방지
+        chunk_size=800,   # 청크 하나의 최대 크기: 약 800자
+        chunk_overlap=80, # 청크끼리 80자씩 겹치게 해서 문맥 끊김 방지
     )
 
     # | 구분       | 의미                    |
@@ -286,8 +305,6 @@ def load_and_split_documents():
 # ─────────────────────────────────────────
 # 문서 청크들을 ChromaDB라는 벡터DB에 저장하고, 질문이 들어왔을 때 관련 문서를 찾아오는 검색기 retriever를 만드는 함수
 def build_vector_store(chunks, embeddings):
-    from langchain_chroma import Chroma
-
     # DB가 이미 존재하면 로드, 없으면 새로 구축
     if os.path.exists(CHROMA_DIR):
         print(f"[INFO] 기존 ChromaDB 발견 → 로드합니다: {CHROMA_DIR}")
@@ -310,10 +327,8 @@ def build_vector_store(chunks, embeddings):
     else:
         print(f"[INFO] ChromaDB 구축 중 (최초 1회, CPU 작업으로 시간이 걸릴 수 있습니다): {CHROMA_DIR}")
         db = Chroma.from_documents(
-
             # 저장할 문서 조각들이야. 앞에서 RecursiveCharacterTextSplitter로 나눈 결과물
             documents=chunks,
-
             embedding=embeddings,
             persist_directory=CHROMA_DIR,
             collection_metadata={"hnsw:space": "l2"},
@@ -334,21 +349,6 @@ def build_vector_store(chunks, embeddings):
 # 사용자 질문 question과 함께 LLM에 넣어서,
 # 최종적으로 context + question + answer를 함께 반환하는 RAG 체인을 만드는 코드
 def build_rag_chain(chat_model, retriever):
-    # LLM에게 보낼 대화 양식을 미리 만들어두는 도구
-    # system: AI에게 주는 기본 규칙
-    # user: 사용자의 질문
-    # assistant: AI 답변    
-    from langchain_core.prompts import ChatPromptTemplate
-
-    # LLM의 출력 결과를 문자열로 정리해주는 도구
-    # 프롬프트 → LLM 답변 → 문자열로 변환
-    from langchain_core.output_parsers import StrOutputParser
-
-    # LangChain에서 여러 작업을 병렬처럼 묶어서 실행할 때 쓰는 도구
-    # RunnableParallel: 하나의 입력 질문에서 context와 question을 동시에 만들어내기 위한 도구
-    # RunnablePassthrough: 입력값을 그대로 통과시키는 도구
-    from langchain_core.runnables import RunnableParallel, RunnablePassthrough
-
     # 성능 향상을 위한 영문 시스템 프롬프트 + 한국어 답변 요청
     # 여기서는 RAG용 프롬프트 템플릿을 만들고 있어.
     RAG_prompt = ChatPromptTemplate(
@@ -361,7 +361,7 @@ If the Context doesn't contain the facts to answer,
 just output '답변할 수 없습니다.'
 Please answer in Korean.""",
             ),
-            
+
 # user 메시지는 실제로 LLM에게 들어갈 사용자 입력 형식이야.
 # ---
 # | 변수           | 의미                       |
@@ -369,7 +369,7 @@ Please answer in Korean.""",
 # | `{context}`  | retriever가 검색해온 관련 문서 내용 |
 # | `{question}` | 사용자가 입력한 질문              |
 # ---
-# Context: 
+# Context:
 # 주제: 인공지능
 # 인공지능은 인간의 학습 능력, 추론 능력...
 # ---
@@ -416,8 +416,8 @@ Question: {question}""",
     #   question = "트랜스포머가 뭐예요?" 가 돼.
     rag_chain_with_source = RunnableParallel(
         {
-            "context": retriever | format_docs,      # 질문으로 관련 문서 검색 후 context 문자열 생성
-            "question": RunnablePassthrough(),       # 사용자 질문을 그대로 question에 전달
+            "context": retriever | format_docs,  # 질문으로 관련 문서 검색 후 context 문자열 생성
+            "question": RunnablePassthrough(),   # 사용자 질문을 그대로 question에 전달
         }
 
     # 이 부분은 앞에서 만든 context와 question을 이용해서 추가로 answer 값을 만들어 붙이는 코드야.
@@ -432,7 +432,7 @@ Question: {question}""",
     #     "answer": "트랜스포머는 어텐션 메커니즘을 기반으로 한..."
     # }
     ).assign(
-        answer=rag_chain_from_docs                   # context + question을 이용해 LLM 답변 생성
+        answer=rag_chain_from_docs  # context + question을 이용해 LLM 답변 생성
     )
 
     print("[INFO] RAG Chain 구성 완료")
@@ -448,7 +448,7 @@ def run_queries(rag_chain):
     questions = [
         "인공지능은 어떤 분야인가요?",
         "트랜스포머가 뭐예요?",
-        "GPT5는 언제 나와요?",          # 컨텍스트에 없으므로 '답변할 수 없습니다' 예상
+        "GPT5는 언제 나와요?",           # 컨텍스트에 없으므로 '답변할 수 없습니다' 예상
         "알리바바의 거대 언어 모델 이름은?",
         "인공지능의 위험은 없나요?",
         "GPT-4o의 출시일은 언제인가요?",

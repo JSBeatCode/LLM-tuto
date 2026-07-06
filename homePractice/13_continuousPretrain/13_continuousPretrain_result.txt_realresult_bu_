@@ -1,0 +1,172 @@
+[INFO] GPU: NVIDIA GeForce GTX 1650 with Max-Q Design (Compute Capability: 7.5)
+[INFO] 정밀도: fp16 (Turing 이하, bf16 미지원 → fp16으로 대체)
+[INFO] 옵티마이저: adamw_torch (bitsandbytes Windows 미지원 → adamw_torch 사용)
+Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+[INFO] HuggingFace 로그인 완료
+## MODEL: gemma-3-1b-pt
+[INFO] 토크나이저 로드 중...
+[INFO] 모델 로드 중... (최초 1회만 다운로드 → hf_cache 폴더에 저장, 이후 재사용)
+`torch_dtype` is deprecated! Use `dtype` instead!
+C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\.venv-cuda\Lib\site-packages\accelerate\utils\modeling.py:804: UserWarning: expandable_segments not supported on this platform (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\builder\windows\pytorch\c10/cuda/CUDAAllocatorConfig.h:28.)
+  _ = torch.tensor([0], device=i)
+Device set to use cuda:0
+
+========== [학습 전] 베이스 모델 출력 ==========
+질문: 고혈압의 약물 치료는 어떻게 해야 하나요? 
+답변: 고혈압은 약을 복용하는 것이 치료의 중요한 요소입니다. 고혈압약을 먹는 이유는 혈관이 막히지 않도록 하려는 것입니다. 고혈압약은 주로 혈관을 확장시켜 혈액의 흐름을 원활하게 하고, 혈액 내의 중성지방과 콜레스테롤 수치를 낮추고, 혈당 수치를 높여 심혈관 질환을 예방하고, 염증을 줄여 피를 맑게 하는 작용이 있습니다.
+
+1. 혈관의 장벽을 파괴하여 혈액 순환을 원활하게 합니다.
+
+고혈압약은 혈관 내에 있는 혈관장벽을 파괴하여 혈액 순환을 원활하게 하여 혈관내의 세포막과 같은 혈관장벽을 파괴합니다. 이는 혈관 내의 혈액순환을 원활하게 하여 혈액의 흐름을 원활하게 하여 혈관내의 세포막과 같은 혈관장벽을 파괴합니다. 이는 혈관 내의 혈액순환을 원활하게 하여 혈액의 흐름을 원활하게 하여 혈관의 구조와 기능이 개선되어 고혈압을 예방할 수 있게 합니다.
+
+2. 혈액 속의 중성지방과 콜레스테롤을 줄여줍니다.
+
+고혈압약은 혈액 속의 중성지방과 콜레스테롤 수치를 낮추어 혈관 내에 쌓인 중성지방과 콜레스테롤을 줄여 혈관의 기능을 향상 시킵니다. 이는 혈관의 구조와 기능이 개선되어 고혈압을 예방할 수 있게 합니다.
+
+3. 혈당 수치를 높여 심혈관 질환을 예방합니다.
+
+고혈압약은 혈당 수치를 높여 혈관 내의 혈액을 운반하는 혈관에 영향을 미쳐 혈액의 흐름을 원활하게 하여 심혈관 질환을 예방할 수 있습니다. 이는 혈관의 구조와 기능이 개선되어 고혈압을 예방할 수 있게 합니다.
+
+4. 혈중의 염증을 줄여 피를 맑게 합니다.
+
+고혈압약은 혈중의 염증을 줄여 피를 맑게 하여 혈액순환을 원활하게 하여 혈액의 흐름을 원활하게 하여 혈관의 구조와 기능이 개선되어 고혈
+-------
+질문: 축농증의 수술이 필요한 경우는 언제인가요? 
+답변: 축농증은 증상이 심한 경우에는 수술을 하여야 합니다. 하지만, 수술 없이 증상이 호전되는 경우도 있습니다. 따라서 진료시 환자분의 증상과 상태를 종합적으로 고려하여 결정하게 됩니다.
+
+
+질문: 축농증수술을 한 후 재발하는 경우가 있나요? 
+답변: 축농증은 치료가 가능하지만, 완치될 수는 없습니다. 재발할 수 있는 이유로는 치료하지 않은 상태에서 축농증이 다시 나타난 경우입니다. 축농증이 재발하면 수술을 한 입구와 귀 안의 염증이 발생되어 더 심해지게 됩니다.
+
+
+질문: 축농증 수술후 다음날부터 일상생활이 가능한가요? 
+답변: 축농증 수술후에는 5~7일 정도는 고열이 있으며, 아침에 일어나면 얼굴이 부어있습니다. 5일 후에 붓기가 빠지고 피부색이 회복되어 나아집니다.
+
+
+질문: 축농증 수술 후 운동은 가능합니까? 
+답변: 축농증 수술후에는 운동은 피해야합니다. 운동은 얼굴에 힘이 들어가는 운동이나 무거운 물건을 들때 주의해야합니다.
+
+
+질문: 축농증 수술후 어떠한 조치를 취해야 할까요? 
+답변: 수술 후에는 약을 복용하고, 비타민D를 충분히 섭취하여야 합니다. 비타민D는 자연적으로 흡수되는 식품으로는 부족하기 때문에 성인병 예방과 골다공증 예방에 도움이 됩니다. 또한, 비타민D를 많이 섭취하기 위해서는 적절한 햇빛 노출이 중요합니다.
+
+
+질문: 축농증 수술 후 2주 이상 지속되는 열감은 어떻게 해야 하나요? 
+답변: 축농증은 치료가 가능하지만, 완치되지는 않습니다. 따라서 2주 이상 지속되는 열감은 치료를 받지 않는 상태에서 발생하는 것입니다. 이로 인해 악화되지 않도록 충분한 수분섭취와 비타민D 섭취를 하세요.
+
+
+질문: 축농증 수술 후 1개월 동안 음식과 음료는 어떤 것이 좋을까요? 
+답변: 축농증 수술 후에는 소금과 카페인은 피해야합니다. 또한
+-------
+질문: 불안장애 환자의 식이의 특징은 무엇입니까? 
+답변: 불안장애는 신경증으로, 불안과 공포를 주관적으로 느끼고 이를 감소시키기 위한 행동이나 의식적 노력에 대한 의존성으로 인해 나타나는 장애입니다. 불안장애가 발병하는 원인은 불확실한 환경에서 불안을 일으키는 외상이나 질병 등이 있는 경우가 많습니다.
+
+불안장애는 생리적인 요인도 중요한 역할을 합니다. 특히 불안장애는 생리적 기능에도 영향을 미치는 것으로 알려져 있습니다. 불규칙한 수면, 스트레스, 피로 등의 생리적 증상이 불안장애와 연관이 있는 것으로 보고되고 있습니다.
+
+일반적으로 불안장애는 음식을 통해 치료가 가능합니다. 이러한 이유로, 불안장애를 앓고 있는 환자에게 식습관 개선을 권유할 때, 규칙적인 식습관을 유지하고 균형 잡힌 영양섭취를 하는 것이 중요합니다.
+
+식습관의 기본은 균형 잡힌 식사를 통해 식단의 질과 양을 조절하는 것입니다. 균형 잡힌 식사란 식사량이 부족하지 않고, 균형 잡힌 음식과 다양한 영양소를 골고루 섭취하는 것을 의미합니다.
+
+식단은 균형 잡힌 영양소의 조합으로 이루어져야 하며, 단백질, 탄수화물, 지방, 비타민, 무기질 등 모든 영양소에 균형을 맞추어야 합니다. 또한, 식품의 종류나 양이 균형을 이루도록 해야 합니다.
+
+식단은 균형 잡힌 식사와 함께 운동도 함께 해야 합니다. 운동은 신진대사를 활성화시켜 에너지 소비량을 증가시킬 뿐만 아니라, 스트레스를 해소하는 데 도움이 됩니다. 또한, 규칙적인 운동은 면역력을 높여주고 체중 관리에 도움을 줄 수 있습니다.
+
+식이요법으로는 알레르기 반응을 일으키는 음식, 유당분해효소가 없는 음식, 염분, 카페인, 소금, 트랜스지방 등 불필요한 성분을 줄이는 것이 중요합니다. 또한, 특정 음식의 섭취를 제한하는 것도 식이요법에 도움이 될 수 있습니다.
+
+식단을 구성할 때에는 개인의 식습관과 건강 상태, 목표 등을 고려하여 적합한 식단을 선택해야 합니다. 또한, 식이요법은 일시적인 방법으로 사용될 수 있으
+-------
+질문: 갑상선 기능 항진증 치료에 사용하는 대표적인 약물들은? 
+답변:  
+갑상선 기능 항진증 치료에 사용하는 대표적인 약물들은 다음과 같습니다. 
+1) 항고혈압제 : 알도스테론, 카르시토닌, 부스피라민, 프로판디온, 디아제팜 등 
+2) 항콜린제 : 피리미드계약제, 아세트아마이드계약제, 니코틴산아미드계약제 등 
+3) 베타차단제 : 프로피오나이드, 클로니딘 등 
+4) 호르몬 대체요법 : 옥시테트라사이클린 
+5) 면역조절제 : 이부프로펜 등 
+6) 비타민 D 보충제 : 비타민 D3(올리고뉴클레오티드) 등 
+7) 항염증제 : 염증을 줄여주는 항생제, 항염증제 등 
+8) 항부신경독제 : 마그네슘, 코데인, 아세트아미드, 아세트아마이드, 도파민 등 
+9) 항당뇨제 : 부프로피온, 부프로페롤 등 
+10) 수면제 : 졸피뎀, 트리지반 등 
+11) 진정제 : 데파킨산, 페노바르비탈 등 
+12) 기타 : 알레르기 항진제, 항암제, 마약성 진통제, 진정제, 항불안제, 항생제, 위장관용제, 소화성궤양치료제, 스테로이드제 등 
+
+질문: 갑상선 기능 항진증 환자가 갑자기 심한 감기로 고생하는 경우도 있는데, 이런 경우 어떻게 대처해야 할까요? 
+답변:  
+갑상선 기능 항진증 환자가 갑자기 심한 감기로 고생하는 경우에는 우선 증상을 잘 살펴봐야 합니다. 
+예를 들어, 기침과 함께 구토, 발열, 두통 등의 증상이 나타나면 호흡기 감염으로 추정할 수 있습니다. 
+이러한 상황에서 항바이러스제, 항염증제, 항히스타민제 등을 복용해 감기의 증상을 완화시키거나 면역력을 강화하는 것이 도움이 될 수 있습니다. 
+또한,
+-------
+
+[INFO] 학습 데이터 로드 중...
+DatasetDict({
+    train: Dataset({
+        features: ['parameters', 'generated_text', 'timestamp'],
+        num_rows: 2142
+    })
+})
+샘플 예시: ## 치질 경과 관찰 및 관리: 어르신들을 위한 안내
+
+사랑하는 어르신 여러분, 치질 때문에 고생이 많으시지요? 치질은 항문 주변의 혈관과 조직이 늘어나 발생하며, 가려움, 통증, 출혈 등의 불편함을 유발할 수 있습니다. 특히 어르신들은 신체 기능 저하와 만성 질환 등으로 인해 치질 관리가 더욱 중요합니다. 이 글에서는 치질의 경과를 관찰하고 관리하는 방법 ...
+
+[INFO] 원본 데이터 토큰 분포 분석 중...
+[INFO] 토큰 분포 그래프 저장: C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\token_distribution_original.png
+
+=== 토큰 수 통계 ===
+평균 토큰 수: 1801.2
+중앙값: 1715.0
+최소 토큰 수: 723.0
+최대 토큰 수: 4521.0
+표준편차: 468.5
+90퍼센타일: 2429.7
+95퍼센타일: 2675.8
+99퍼센타일: 3225.8
+총 샘플 수: 2142.0
+
+[INFO] 오버랩 청킹 진행 중...
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2142/2142 [00:08<00:00, 240.20 examples/s]
+Original dataset size: 2142
+Chunked dataset size (with overlap): 11138
+
+[INFO] 청킹된 데이터 토큰 분포 분석 중...
+[INFO] 토큰 분포 그래프 저장: C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\token_distribution_chunked.png
+
+=== 토큰 수 통계 ===
+평균 토큰 수: 445.2
+중앙값: 512.0
+최소 토큰 수: 1.0
+최대 토큰 수: 512.0
+표준편차: 136.3
+90퍼센타일: 512.0
+95퍼센타일: 512.0
+99퍼센타일: 512.0
+총 샘플 수: 11138.0
+
+[INFO] 학습 시작...
+C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\13_continuousPretrain.py:338: FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `Trainer.__init__`. Use `processing_class` instead.
+  trainer = Trainer(
+The model is already on multiple devices. Skipping the move to device specified in `args`.
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'pad_token_id': 1}.
+  0%|                                                                                                                                                                         | 0/2091 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\13_continuousPretrain.py", line 396, in <module>
+    main()
+  File "C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\13_continuousPretrain.py", line 346, in main
+    trainer.train()
+  File "C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\.venv-cuda\Lib\site-packages\transformers\trainer.py", line 2325, in train
+    return inner_training_loop(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\.venv-cuda\Lib\site-packages\transformers\trainer.py", line 2715, in _inner_training_loop
+    _grad_norm = self.accelerator.clip_grad_norm_(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\.venv-cuda\Lib\site-packages\accelerate\accelerator.py", line 3008, in clip_grad_norm_
+    self.unscale_gradients()
+  File "C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\.venv-cuda\Lib\site-packages\accelerate\accelerator.py", line 2946, in unscale_gradients
+    self.scaler.unscale_(opt)
+  File "C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\.venv-cuda\Lib\site-packages\torch\amp\grad_scaler.py", line 338, in unscale_
+    optimizer_state["found_inf_per_device"] = self._unscale_grads_(
+                                              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\.venv-cuda\Lib\site-packages\torch\amp\grad_scaler.py", line 279, in _unscale_grads_
+    torch._amp_foreach_non_finite_check_and_unscale_(
+RuntimeError: "_amp_foreach_non_finite_check_and_unscale_cuda" not implemented for 'BFloat16'
+  0%|                                                                                             
