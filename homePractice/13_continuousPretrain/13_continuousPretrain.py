@@ -119,11 +119,50 @@ def main():
         print("GPU가 있는 환경(Colab, 클라우드 GPU 서버 등)에서 실행해 주세요.")
         sys.exit(1)
 
+        # 내 컴퓨터의 GPU를 조사해서, 그 GPU에 맞는 최적의 학습 옵션을 자동으로 선택하는 코드
+    
+    # GPU 이름을 알려줘:
+    #     만약 GPU가 여러 개라면
+    #     GPU 0: GTX 1650
+    #     GPU 1: GTX 3050
+    #     GPU 2: GTX 4050
+    #     이렇게 번호가 붙어서 '(0)' 첫번째 것을 가져옴
     gpu_name = torch.cuda.get_device_name(0)
+    
+    # GPU의 연산 능력(Compute Capability)을 알려줌.
+    # | Compute Capability | GPU         |
+    # | ------------------ | ----------- |
+    # | 7.5                | GTX1650     |
+    # | 8.0                | RTX30xx     |
+    # | 8.6                | RTX3090     |
+    # | 8.9                | RTX4090     |
+    # | 9.x                | Blackwell 등 |
+    # 번호가 높을수록 새로운 기능을 지원합니다.
     compute_capability = torch.cuda.get_device_capability(0)  # (major, minor) 튜플
+    
+    # 만약 GTX1650이면
+    # (7,5)
+    # 이므로
+    # 7 >= 8
+    # ↓
+    # False
+    # bf16은 Brain Floating Point 16이라는 숫자 표현 방식입니다.
+    # 하지만 RTX30xx 이상에서만 제대로 지원됩니다.
     use_bf16 = compute_capability[0] >= 8  # Ampere(sm_80) 이상이면 bf16 지원
+    
+    # 둘 중 하나만 사용하겠다는 의미
     use_fp16 = not use_bf16                # Turing(sm_75) 이하면 fp16 사용
+
     # Ada Lovelace + Linux → bitsandbytes 지원 → paged_adamw_8bit 사용 가능
+    # optimaizer:내 컴퓨터의 GPU를 조사해서, 그 GPU에 맞는 최적의 학습 옵션을 자동으로 선택하는 코드
+    # | 항목         | adamw_torch | paged_adamw_8bit |
+    # | ---------- | ----------- | ---------------- |
+    # | 구현         | PyTorch 기본  | bitsandbytes     |
+    # | 메모리 사용     | 많음          | 매우 적음            |
+    # | 속도         | 보통          | 빠른 경우가 많음        |
+    # | VRAM 절약    | ❌           | ✅                |
+    # | 대형 LLM 학습  | △           | ✅                |
+    # | Windows 지원 | ✅           | 제한적(환경에 따라 다름)   |
     optimizer = "paged_adamw_8bit" if use_bf16 else "adamw_torch"
 
     print(f"[INFO] GPU: {gpu_name} (Compute Capability: {compute_capability[0]}.{compute_capability[1]})")
@@ -149,25 +188,42 @@ def main():
     #    - cache_dir을 .py 위치의 hf_cache 폴더로 지정
     #    - 재실행 시 hf_cache 폴더가 존재하면 다운로드 생략 (중복 다운로드 방지)
     #    - 전역 캐시(~/.cache/huggingface)는 사용하지 않음
-    # -------------------------------------------------------------------
+                                                # -------------------------------------------------------------------
     print(f"## MODEL: {MODEL_NAME}")
 
+    # GPU가 행렬(Matrix) 계산을 더 빠르고 효율적으로 하도록 설정하는 코드
+    # "highest" : 가장 정확하지만 느릴 수 있음
+    # "high" : 정확도는 거의 유지하면서 더 빠름 ✅ (가장 많이 사용)
+    # "medium" : 더 빠르지만 정확도가 조금 더 낮을 수 있음
+    # 왜 사용하는가? -> 학습 속도를 높이기 위해서입니다.
     torch.set_float32_matmul_precision("high")
 
     # 모델/토크나이저 캐시를 .py 파일과 같은 위치의 hf_cache 폴더에 저장
     HF_CACHE_DIR = os.path.join(BASE_DIR, "hf_cache")
     os.makedirs(HF_CACHE_DIR, exist_ok=True)
-
+    # "안녕하세요"
+    # ↓
+    # Tokenizer
+    # ↓
+    # [912, 4312, 77]
+    # 이처럼 문자를 숫자(Token ID)로 변환해야 모델이 이해
+    # Gemma  → Gemma Tokenizer
+    # Llama  → Llama Tokenizer
+    # Qwen   → Qwen Tokenizer
+    # 처럼 자동으로 맞는 Tokenizer를 가져옵니다.
+    # from_pretrained() -> 이미 학습되어 공개된 모델의 Tokenizer를 불러오는 함수
     print("[INFO] 토크나이저 로드 중...")
     tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, cache_dir=HF_CACHE_DIR)
 
     print("[INFO] 모델 로드 중... (최초 1회만 다운로드 → hf_cache 폴더에 저장, 이후 재사용)")
+    # 자동으로 Gemma 모델을 다운로드(또는 캐시에서 읽어서) GPU에 로드합니다.
+   # 사전학습된 Gemma 모델을 불러오고, GPU/CPU와 데이터 타입을 자동 설정한다.
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_ID,
-        torch_dtype="auto",
-        device_map="auto",
-        attn_implementation="eager",
-        cache_dir=HF_CACHE_DIR,
+        torch_dtype="auto",          # GPU에 맞는 데이터 타입 자동 선택
+        device_map="auto",           # GPU/CPU 자동 선택
+        attn_implementation="eager", # 기본 Attention 방식 사용
+        cache_dir=HF_CACHE_DIR,      # 모델 캐시 저장 위치
     )
 
     # -------------------------------------------------------------------
