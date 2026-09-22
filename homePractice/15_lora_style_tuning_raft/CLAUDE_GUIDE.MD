@@ -1,5 +1,4 @@
-https://claude.ai/share/617b231a-4b72-40bb-82b5-6d0f8f89dee5
-14_fineTuningSFT 과 같은 claude chat 방을 씀.
+https://claude.ai/share/ad56df2e-cfbe-457f-96f2-712d9f679c6f
 
 ===
 [uv 생성]
@@ -18,8 +17,9 @@ uv pip install -r requirements.txt
 예) 
 numpy==2.1.3
 trl==0.9.6
+
 ===
 [uv 실행]
-cd cd C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain
+cd C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\15_lora_style_tuning_raft\
 .venv-cuda/Scripts/Activate.ps1
-python "C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\13_continuousPretrain.py"
+python "C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\15_lora_style_tuning_raft\15_lora_style_tuning_raft.py"

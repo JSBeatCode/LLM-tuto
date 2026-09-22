@@ -1,5 +1,5 @@
 https://claude.ai/share/617b231a-4b72-40bb-82b5-6d0f8f89dee5
-14_fineTuningSFT 과 같은 claude chat 방을 씀.
+13_continousPretrain 과 같은 claude chat 방을 씀.
 
 ===
 [uv 생성]
@@ -20,6 +20,6 @@ numpy==2.1.3
 trl==0.9.6
 ===
 [uv 실행]
-cd cd C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain
+cd C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\14_fineTuningSFT\
 .venv-cuda/Scripts/Activate.ps1
-python "C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\13_continuousPretrain\13_continuousPretrain.py"
+python "C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\14_fineTuningSFT\14_train.py"

@@ -12,3 +12,16 @@ RAG_db
 .venv-cuda
 hf_cache
 
+homePractice\14_fineTuningSFT\.venv-cuda
+homePractice\14_fineTuningSFT\dataset_cache
+homePractice\14_fineTuningSFT\gemma-3-1b-it-tokenizer
+homePractice\14_fineTuningSFT\gemma-3-1b-pt-MED
+homePractice\14_fineTuningSFT\outputs
+homePractice\14_fineTuningSFT\temp
+
+.venv-cuda
+dataset_cache
+gemma-3-1b-it-tokenizer
+gemma-3-1b-pt-MED
+outputs
+temp

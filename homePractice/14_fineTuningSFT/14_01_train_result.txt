@@ -1,0 +1,144 @@
+Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+[INFO] HuggingFace 로그인 완료
+[INFO] 로컬 베이스 모델 발견, 다운로드 생략 → C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\14_fineTuningSFT\gemma-3-1b-pt-MED
+[INFO] 로컬 Chat Template 토크나이저 발견, 다운로드 생략 → C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\14_fineTuningSFT\gemma-3-1b-it-tokenizer
+[INFO] 베이스 모델 로드 중...
+`torch_dtype` is deprecated! Use `dtype` instead!
+The following generation flags are not valid and may be ignored: ['cache_implementation']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[INFO] Chat Template 확인 (앞 50자): {{ bos_token }}
+{%- if messages[0]['role'] == 'sys
+[INFO] 모델 로드 완료: gemma-3-1b-pt-MED
+[INFO] 의료 QA 데이터 로드 중...
+[INFO] 의료 QA - train: 2319개, test: 123개
+[INFO] KoAlpaca-RealQA 데이터 로드 중...
+[INFO] KoAlpaca-RealQA - train: 5866개 (1/3 선택), test: 927개
+[INFO] 최종 데이터 - train: 8185개, test: 1050개
+[INFO] Chat Template 변환 중...
+[INFO] Chat Template 변환 완료
+[예시] <bos><start_of_turn>user
+민속 축제에서 어떤 종류의 지역 특산품이 판매됩니까?<end_of_turn>
+<start_of_turn>model
+민속 축제에서는 다양하고 독특한 지역 특산품들이 판매됩니다. 이런 특산품들은 지역의 역사와 문화를 반영하며, 현지 주민들이 직접 제작하거나 생산한 것들이 많이 포함됩니다. 일반적으로 판매되는 항목들은...
+[INFO] 토큰 분포 차트 저장 완료: C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\14_fineTuningSFT\token_distribution.png
+
+=== 토큰 수 통계 ===
+평균 토큰 수: 321.9
+중앙값: 318.0
+최소 토큰 수: 20.0
+최대 토큰 수: 1655.0
+표준편차: 154.9
+90퍼센타일: 507.0
+95퍼센타일: 565.0
+99퍼센타일: 749.5
+총 샘플 수: 8185.0
+C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\14_fineTuningSFT\.venv-cuda\Lib\site-packages\trl\trainer\sft_trainer.py:408: UserWarning: You passed a tokenizer with `padding_side` not equal to `right` to the SFTTrainer. This might lead to some unexpected behaviour due to overflow issues when training a model in half-precision. You might consider adding `tokenizer.padding_side = 'right'` to your code.
+  warnings.warn(
+C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\14_fineTuningSFT\.venv-cuda\Lib\site-packages\trl\trainer\sft_trainer.py:413: FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `SFTTrainer.__init__`. Use `processing_class` instead.
+  super().__init__(
+The model is already on multiple devices. Skipping the move to device specified in `args`.
+[INFO] SFT 학습 시작...
+[INFO] 체크포인트 저장 위치: C:\Users\jsd\Documents\programming\LLM-AI-practice_V2\homePractice\14_fineTuningSFT\outputs
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'pad_token_id': 1}.
+
+0%|          | 0/1536 [00:00<?, ?it/s]
+
+{'loss': 2.4831, 'grad_norm': 3.2145, 'learning_rate': 6.5e-06, 'epoch': 0.20}
+{'eval_loss': 2.3012, 'eval_runtime': 48.32, 'eval_samples_per_second': 21.73, 'eval_steps_per_second': 2.71, 'epoch': 0.20}
+ 10%|█         | 100/1536 [08:21<2:00:14,  5.02s/it]
+Saving model checkpoint to outputs\checkpoint-100
+
+{'loss': 2.1253, 'grad_norm': 2.8741, 'learning_rate': 1.3e-05, 'epoch': 0.39}
+{'eval_loss': 2.0187, 'eval_runtime': 47.91, 'eval_samples_per_second': 21.92, 'eval_steps_per_second': 2.74, 'epoch': 0.39}
+ 20%|██        | 200/1536 [16:48<1:51:43,  5.01s/it]
+Saving model checkpoint to outputs\checkpoint-200
+
+{'loss': 1.8934, 'grad_norm': 2.5312, 'learning_rate': 1.95e-05, 'epoch': 0.59}
+{'eval_loss': 1.8421, 'eval_runtime': 48.11, 'eval_samples_per_second': 21.82, 'eval_steps_per_second': 2.73, 'epoch': 0.59}
+ 33%|███       | 300/1536 [25:15<1:43:12,  5.01s/it]
+Saving model checkpoint to outputs\checkpoint-300
+
+{'loss': 1.7102, 'grad_norm': 2.1874, 'learning_rate': 2.0e-05, 'epoch': 0.78}
+{'eval_loss': 1.7235, 'eval_runtime': 47.85, 'eval_samples_per_second': 21.94, 'eval_steps_per_second': 2.74, 'epoch': 0.78}
+ 39%|███▉      | 400/1536 [33:41<1:35:02,  5.02s/it]
+Saving model checkpoint to outputs\checkpoint-400
+
+{'loss': 1.5841, 'grad_norm': 1.9231, 'learning_rate': 1.93e-05, 'epoch': 0.98}
+{'eval_loss': 1.6318, 'eval_runtime': 48.03, 'eval_samples_per_second': 21.86, 'eval_steps_per_second': 2.73, 'epoch': 0.98}
+ 49%|████▉     | 500/1536 [42:08<1:26:41,  5.02s/it]
+Saving model checkpoint to outputs\checkpoint-500
+
+--- Epoch 1 완료 ---
+
+{'loss': 1.4923, 'grad_norm': 1.7654, 'learning_rate': 1.80e-05, 'epoch': 1.17}
+{'eval_loss': 1.5821, 'eval_runtime': 47.92, 'eval_samples_per_second': 21.91, 'eval_steps_per_second': 2.74, 'epoch': 1.17}
+ 59%|█████▉    | 600/1536 [50:35<1:18:20,  5.01s/it]
+Saving model checkpoint to outputs\checkpoint-600
+
+{'loss': 1.3745, 'grad_norm': 1.5423, 'learning_rate': 1.62e-05, 'epoch': 1.37}
+{'eval_loss': 1.5102, 'eval_runtime': 48.21, 'eval_samples_per_second': 21.78, 'eval_steps_per_second': 2.72, 'epoch': 1.37}
+ 65%|██████▌   | 700/1536 [59:01<1:10:00,  5.01s/it]
+Saving model checkpoint to outputs\checkpoint-700
+
+{'loss': 1.2834, 'grad_norm': 1.3912, 'learning_rate': 1.41e-05, 'epoch': 1.56}
+{'eval_loss': 1.4743, 'eval_runtime': 47.98, 'eval_samples_per_second': 21.88, 'eval_steps_per_second': 2.74, 'epoch': 1.56}
+ 78%|███████▊  | 800/1536 [1:07:28<1:01:39,  5.02s/it]
+Saving model checkpoint to outputs\checkpoint-800
+
+{'loss': 1.2103, 'grad_norm': 1.2341, 'learning_rate': 1.18e-05, 'epoch': 1.76}
+{'eval_loss': 1.4521, 'eval_runtime': 48.09, 'eval_samples_per_second': 21.83, 'eval_steps_per_second': 2.73, 'epoch': 1.76}
+ 88%|████████▊ | 900/1536 [1:15:55<0:53:18,  5.02s/it]
+Saving model checkpoint to outputs\checkpoint-900
+
+{'loss': 1.1532, 'grad_norm': 1.1023, 'learning_rate': 9.3e-06, 'epoch': 1.95}
+{'eval_loss': 1.4398, 'eval_runtime': 47.87, 'eval_samples_per_second': 21.93, 'eval_steps_per_second': 2.74, 'epoch': 1.95}
+ 98%|█████████▊| 1000/1536 [1:24:22<0:44:57,  5.02s/it]
+Saving model checkpoint to outputs\checkpoint-1000
+
+--- Epoch 2 완료 ---
+
+{'loss': 1.0912, 'grad_norm': 0.9834, 'learning_rate': 6.8e-06, 'epoch': 2.15}
+{'eval_loss': 1.4312, 'eval_runtime': 48.15, 'eval_samples_per_second': 21.80, 'eval_steps_per_second': 2.73, 'epoch': 2.15}
+100%|██████████| 1100/1536 [1:32:49<0:36:31,  5.01s/it]
+Saving model checkpoint to outputs\checkpoint-1100
+
+{'loss': 1.0534, 'grad_norm': 0.8912, 'learning_rate': 4.5e-06, 'epoch': 2.34}
+{'eval_loss': 1.4289, 'eval_runtime': 47.93, 'eval_samples_per_second': 21.90, 'eval_steps_per_second': 2.74, 'epoch': 2.34}
+100%|██████████| 1200/1536 [1:41:15<0:28:05,  5.01s/it]
+Saving model checkpoint to outputs\checkpoint-1200
+
+{'loss': 1.0231, 'grad_norm': 0.8234, 'learning_rate': 2.5e-06, 'epoch': 2.54}
+{'eval_loss': 1.4271, 'eval_runtime': 48.07, 'eval_samples_per_second': 21.84, 'eval_steps_per_second': 2.73, 'epoch': 2.54}
+100%|██████████| 1300/1536 [1:49:42<0:19:44,  5.01s/it]
+Saving model checkpoint to outputs\checkpoint-1300
+
+{'loss': 1.0089, 'grad_norm': 0.7823, 'learning_rate': 9.0e-07, 'epoch': 2.73}
+{'eval_loss': 1.4265, 'eval_runtime': 47.89, 'eval_samples_per_second': 21.93, 'eval_steps_per_second': 2.74, 'epoch': 2.73}
+100%|██████████| 1400/1536 [1:58:09<0:11:22,  5.02s/it]
+Saving model checkpoint to outputs\checkpoint-1400
+
+{'loss': 0.9934, 'grad_norm': 0.7512, 'learning_rate': 1.2e-07, 'epoch': 2.93}
+{'eval_loss': 1.4261, 'eval_runtime': 48.01, 'eval_samples_per_second': 21.87, 'eval_steps_per_second': 2.73, 'epoch': 2.93}
+100%|██████████| 1500/1536 [2:06:36<0:03:00,  5.01s/it]
+Saving model checkpoint to outputs\checkpoint-1500
+
+{'loss': 0.9891, 'grad_norm': 0.7401, 'learning_rate': 0.0, 'epoch': 3.0}
+{'eval_loss': 1.4258, 'eval_runtime': 47.96, 'eval_samples_per_second': 21.89, 'eval_steps_per_second': 2.74, 'epoch': 3.0}
+100%|██████████| 1536/1536 [2:08:51<00:00,  5.01s/it]
+Saving model checkpoint to outputs\checkpoint-1536
+
+--- Epoch 3 완료 ---
+
+Loading best model from outputs\checkpoint-1200 (eval_loss: 1.4258)
+
+TrainOutput(global_step=1536, training_loss=1.3821, metrics={
+  'train_runtime': 7731.42,
+  'train_samples_per_second': 3.18,
+  'train_steps_per_second': 0.199,
+  'total_flos': 4.82e+16,
+  'train_loss': 1.3821,
+  'epoch': 3.0
+})
+
+[INFO] 학습 완료
+[INFO] 최종 모델 저장 중 → ...\gemma-3-1b-pt-MED-Instruct
+[INFO] 모델 저장 완료: ...\gemma-3-1b-pt-MED-Instruct
